@@ -15,6 +15,14 @@ class SecondViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    @IBOutlet weak var secondTab: UITabBarItem!
+    
+    func changeSecondTabOff() {
+        secondTab.isEnabled = false
+    }
+    
+    func changeSecondTabOn() {
+        secondTab.isEnabled = true
+    }
 }
 
