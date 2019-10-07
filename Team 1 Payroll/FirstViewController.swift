@@ -8,21 +8,27 @@
 
 import UIKit
 import SQLite
+import CoreData
 
 class FirstViewController: UIViewController {
     
-    var database: Connection!
+    var managedObjectContext: NSManagedObjectContext!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let nextVC = segue.destination as? OverviewViewController {
+        nextVC.managedObjectContext = managedObjectContext
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        do{
-            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileUrl = documentDirectory.appendingPathComponent("users").appendingPathExtension("sqlite3")
-            let database = try Connection(fileUrl.path)
-            self.database = database
-        }catch{
-            print(error)
+        
+        managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        guard managedObjectContext != nil else {
+            fatalError("This view needs a persistent container.")
         }
+        
     }
     
     @IBOutlet weak var tabBar: UITabBarItem!
@@ -33,13 +39,71 @@ class FirstViewController: UIViewController {
     
     @IBOutlet weak var loginButton: UIButton!
     
-    @IBAction func segueToNext(_ sender: Any){
-        self.performSegue(withIdentifier: "NextSeg", sender: self)
+    @IBAction func loginPressed(_ sender: Any) {
+        
+        if checkUsername{
+            self.performSegue(withIdentifier: "toOverview", sender: self)
+        }
+    
     }
     
-    
+}
 
+extension FirstViewController{
+    func save(value: String, key: String){
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
+            let context = appDelegate.persistentContainer.viewContext
+            guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee_Info", in: context) else {
+                return
+            }
+            
+            let newValue = NSManagedObject(entity: entityDescription, insertInto: context)
+            
+            newValue.setValue(value, forKey: key)
+            do{
+                try context.save()
+                print("Saved: \(value)")
+            }catch{
+                print("Saving Error")
+            }
+        }
+    }
     
+    func retrieveValue(){
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
+            let context = appDelegate.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<Employee_Info>(entityName: "Employee_Info")
+        
+            do{
+                let results = try context.fetch(fetchRequest)
+                for result in results{
+                    if let testValue = result.username{
+                        print(testValue)
+                    }
+                }
+            }catch{
+                print("Could not retrieve")
+            }
+        }
+    }
     
+    var checkUsername: Bool {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
+            let context = appDelegate.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<Employee_Info>(entityName: "Employee_Info")
+            let user = username.text
+            do{
+                let results = try context.fetch(fetchRequest)
+                for result in results{
+                    if user == result.username{
+                        return true
+                    }
+                }
+            }catch{
+                print("Could not retrieve")
+            }
+        }
+        return false
+    }
 }
 

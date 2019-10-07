@@ -31,7 +31,7 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mH5-3h-OKw">
                                 <rect key="frame" x="99" y="589" width="216" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6l8-d5-J4Z">
                                 <rect key="frame" x="100.5" y="518" width="213" height="34"/>
@@ -45,7 +45,7 @@
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
-                                    <segue destination="4v2-aG-3N5" kind="show" identifier="NextSeg" id="PK6-wv-uNI"/>
+                                    <action selector="loginPressed:" destination="9pv-A4-QxB" eventType="primaryActionTriggered" id="LUM-u7-JA2"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -70,12 +70,15 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Manager Login" image="first" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Manager Login" image="first" id="acW-dT-cKf">
+                        <color key="badgeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="loginButton" destination="ONj-cM-oay" id="Tec-Qy-Ndc"/>
                         <outlet property="password" destination="mH5-3h-OKw" id="oKb-23-dxI"/>
                         <outlet property="tabBar" destination="acW-dT-cKf" id="ykc-yT-Vts"/>
                         <outlet property="username" destination="6l8-d5-J4Z" id="8gp-be-7Al"/>
+                        <segue destination="4v2-aG-3N5" kind="show" identifier="toOverview" id="nCX-2Q-0oD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
@@ -86,9 +89,8 @@
         <scene sceneID="m9I-IU-R9t">
             <objects>
                 <viewController title="Overview" modalPresentationStyle="fullScreen" id="4v2-aG-3N5" customClass="OverviewViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="IOc-4h-PG0">
+                    <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOc-4h-PG0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="h9J-On-ivi">
                                 <rect key="frame" x="20" y="44" width="374" height="32"/>
@@ -106,21 +108,33 @@
                                 <rect key="frame" x="0.0" y="83" width="414" height="754"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="InS-kx-TYK">
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="InS-kx-TYK">
                                         <rect key="frame" x="8" y="83" width="398" height="671"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TRd-zb-u2p">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TRd-zb-u2p">
                                                 <rect key="frame" x="0.0" y="0.0" width="398" height="663"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                             </tableView>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="TRd-zb-u2p" firstAttribute="top" secondItem="Iw2-Ml-xys" secondAttribute="top" id="0Ge-Wx-mJj"/>
+                                            <constraint firstAttribute="trailing" secondItem="TRd-zb-u2p" secondAttribute="trailing" id="AZp-qL-47g"/>
+                                            <constraint firstItem="Iw2-Ml-xys" firstAttribute="bottom" secondItem="TRd-zb-u2p" secondAttribute="bottom" constant="8" id="LtQ-ja-a7R"/>
+                                            <constraint firstItem="TRd-zb-u2p" firstAttribute="centerX" secondItem="InS-kx-TYK" secondAttribute="centerX" id="jbL-xc-dSY"/>
+                                            <constraint firstItem="TRd-zb-u2p" firstAttribute="bottom" secondItem="InS-kx-TYK" secondAttribute="bottomMargin" id="wP3-m4-fOd"/>
+                                            <constraint firstItem="TRd-zb-u2p" firstAttribute="leading" secondItem="InS-kx-TYK" secondAttribute="leading" id="zSo-fy-aar"/>
+                                        </constraints>
                                         <viewLayoutGuide key="contentLayoutGuide" id="EA9-KN-nJD"/>
                                         <viewLayoutGuide key="frameLayoutGuide" id="Iw2-Ml-xys"/>
                                     </scrollView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="InS-kx-TYK" firstAttribute="leading" secondItem="zsh-kv-RVE" secondAttribute="leadingMargin" id="QGD-3j-z6R"/>
+                                    <constraint firstItem="InS-kx-TYK" firstAttribute="bottom" secondItem="nUk-MO-DO0" secondAttribute="bottom" id="hVA-mO-V9z"/>
+                                    <constraint firstItem="InS-kx-TYK" firstAttribute="trailing" secondItem="zsh-kv-RVE" secondAttribute="trailingMargin" id="tii-yD-JTv"/>
+                                    <constraint firstItem="InS-kx-TYK" firstAttribute="top" secondItem="nUk-MO-DO0" secondAttribute="top" constant="83" id="wZy-aE-sRU"/>
+                                </constraints>
                                 <viewLayoutGuide key="safeArea" id="nUk-MO-DO0"/>
                             </view>
                             <view contentMode="scaleToFill" id="gek-Po-BTU">
@@ -144,9 +158,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="h9J-On-ivi" firstAttribute="top" secondItem="15H-c4-dZA" secondAttribute="top" id="NVM-ar-7R4"/>
-                            <constraint firstItem="h9J-On-ivi" firstAttribute="centerX" secondItem="GRp-0G-6B7" secondAttribute="centerX" id="Oiy-a6-Z7M"/>
-                            <constraint firstItem="h9J-On-ivi" firstAttribute="leading" secondItem="IOc-4h-PG0" secondAttribute="leadingMargin" id="pFG-oN-O30"/>
+                            <constraint firstItem="h9J-On-ivi" firstAttribute="top" secondItem="15H-c4-dZA" secondAttribute="top" id="4u3-7t-iwi"/>
+                            <constraint firstItem="h9J-On-ivi" firstAttribute="centerX" secondItem="gek-Po-BTU" secondAttribute="centerX" id="HeV-ke-XSO"/>
+                            <constraint firstItem="h9J-On-ivi" firstAttribute="leading" secondItem="IOc-4h-PG0" secondAttribute="leadingMargin" id="uwW-cc-vLr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="15H-c4-dZA"/>
                     </view>
@@ -156,6 +170,8 @@
                         <outlet property="Schedule" destination="zsh-kv-RVE" id="nSN-l3-sHy"/>
                         <outlet property="Wages" destination="vJ7-Lj-TjL" id="d9g-yS-Xac"/>
                         <outlet property="WorkTimes" destination="gek-Po-BTU" id="w2P-eK-nGK"/>
+                        <outlet property="scheduleScroll" destination="InS-kx-TYK" id="LCA-sV-VNz"/>
+                        <outlet property="scheduleScrollTable" destination="TRd-zb-u2p" id="hgS-Jk-3Un"/>
                         <outlet property="tabBar" destination="h9J-On-ivi" id="b3l-aJ-AVr"/>
                     </connections>
                 </viewController>

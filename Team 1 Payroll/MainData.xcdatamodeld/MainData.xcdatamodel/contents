@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14903" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Employee_Info" representedClassName="Employee_Info" syncable="YES" codeGenerationType="class">
+        <attribute name="fname" optional="YES" attributeType="String"/>
+        <attribute name="lname" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String" minValueString="6" maxValueString="20"/>
+        <attribute name="username" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="Employee_Info" positionX="-63" positionY="-18" width="128" height="103"/>
+    </elements>
+</model>

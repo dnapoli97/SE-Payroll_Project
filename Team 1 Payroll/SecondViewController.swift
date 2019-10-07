@@ -7,9 +7,18 @@
 //
 
 import UIKit
+import CoreData
 
 class SecondViewController: UIViewController {
 
+    var managedObjectContext: NSManagedObjectContext!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let nextVC = segue.destination as? OverviewViewController {
+        nextVC.managedObjectContext = managedObjectContext
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

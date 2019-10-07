@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class OverviewViewController: UIViewController {
 
+    var managedObjectContext: NSManagedObjectContext!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         Schedule.isHidden = false
@@ -19,6 +22,8 @@ class OverviewViewController: UIViewController {
     }
     
     @IBOutlet weak var Schedule: UIView!
+    @IBOutlet weak var scheduleScroll: UIScrollView!
+    @IBOutlet weak var scheduleScrollTable: UITableView!
     @IBOutlet weak var WorkTimes: UIView!
     @IBOutlet weak var ApprovePay: UIView!
     @IBOutlet weak var Wages: UIView!
@@ -58,4 +63,9 @@ class OverviewViewController: UIViewController {
             break
         }
     }
+    
+    func ScheduleViewload(){
+        
+    }
+    
 }

@@ -13,9 +13,20 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var container: NSPersistentContainer!
+    
+    lazy var persistentContainer: NSPersistentContainer = {
+        container = NSPersistentContainer(name: "MainData")
+        container.loadPersistentStores { description, error in
+            if let error = error {
+                fatalError("Unable to load persistent stores: \(error)")
+            }
+        }
+        return container
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-         //
+        
         return true
     }
 
@@ -50,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = Bundle.main.url(forResource: "Model", withExtension: "xcdatamodeld")!
+        let modelURL = Bundle.main.url(forResource: "MainData", withExtension: "xcdatamodeld")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
 

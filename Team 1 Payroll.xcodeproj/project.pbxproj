@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		FC1E30BC2343A95E00BFCEB8 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1E30BB2343A95E00BFCEB8 /* OverviewViewController.swift */; };
 		FC1E30F52344741F00BFCEB8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1E30F42344741F00BFCEB8 /* CoreData.framework */; };
-		FC1E30FA23464EB300BFCEB8 /* databaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1E30F923464EB300BFCEB8 /* databaseView.swift */; };
 		FCB02203233C14CB00FB1B64 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB02202233C14CB00FB1B64 /* ThirdViewController.swift */; };
 		FCC81C902332E6AB00D88EBC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC81C8F2332E6AB00D88EBC /* AppDelegate.swift */; };
 		FCC81C922332E6AB00D88EBC /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC81C912332E6AB00D88EBC /* FirstViewController.swift */; };
@@ -21,6 +20,8 @@
 		FCC81CB22332E6BA00D88EBC /* Team_1_PayrollUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC81CB12332E6BA00D88EBC /* Team_1_PayrollUITests.swift */; };
 		FCFD69592349997F00B4D14F /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCFD694C234998FA00B4D14F /* SQLite.framework */; };
 		FCFD695A2349997F00B4D14F /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FCFD694C234998FA00B4D14F /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FCFD6960234AD7A400B4D14F /* MainData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FCFD695E234AD7A400B4D14F /* MainData.xcdatamodeld */; };
+		FCFD6969234AE20A00B4D14F /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFD6968234AE20A00B4D14F /* PersistentContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,7 +158,6 @@
 		FC1E30BD23445D2E00BFCEB8 /* Team 1 Payroll-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Team 1 Payroll-Bridging-Header.h"; sourceTree = "<group>"; };
 		FC1E30C123446A9300BFCEB8 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../../../../Downloads/SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
 		FC1E30F42344741F00BFCEB8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		FC1E30F923464EB300BFCEB8 /* databaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = databaseView.swift; sourceTree = "<group>"; };
 		FCB02202233C14CB00FB1B64 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		FCC81C8C2332E6AB00D88EBC /* Team 1 Payroll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Team 1 Payroll.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCC81C8F2332E6AB00D88EBC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -176,6 +176,8 @@
 		FCC81CC22332E77C00D88EBC /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		FCC81CC42332E7E300D88EBC /* Team 1 Payroll.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Team 1 Payroll.entitlements"; sourceTree = "<group>"; };
 		FCFD6941234998FA00B4D14F /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../../../Downloads/SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
+		FCFD695F234AD7A400B4D14F /* MainData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MainData.xcdatamodel; sourceTree = "<group>"; };
+		FCFD6968234AE20A00B4D14F /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,13 +250,14 @@
 				FCC81C912332E6AB00D88EBC /* FirstViewController.swift */,
 				FCC81C932332E6AB00D88EBC /* SecondViewController.swift */,
 				FCC81C952332E6AB00D88EBC /* Main.storyboard */,
-				FC1E30F923464EB300BFCEB8 /* databaseView.swift */,
+				FCFD6968234AE20A00B4D14F /* PersistentContainer.swift */,
+				FCFD695E234AD7A400B4D14F /* MainData.xcdatamodeld */,
 				FC1E30BB2343A95E00BFCEB8 /* OverviewViewController.swift */,
 				FCB02202233C14CB00FB1B64 /* ThirdViewController.swift */,
-				FCC81C982332E6BA00D88EBC /* Assets.xcassets */,
 				FCC81C9A2332E6BA00D88EBC /* LaunchScreen.storyboard */,
 				FCC81C9D2332E6BA00D88EBC /* Info.plist */,
 				FC1E30BD23445D2E00BFCEB8 /* Team 1 Payroll-Bridging-Header.h */,
+				FCC81C982332E6BA00D88EBC /* Assets.xcassets */,
 			);
 			path = "Team 1 Payroll";
 			sourceTree = "<group>";
@@ -551,9 +554,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCFD6969234AE20A00B4D14F /* PersistentContainer.swift in Sources */,
+				FCFD6960234AD7A400B4D14F /* MainData.xcdatamodeld in Sources */,
 				FCC81C942332E6AB00D88EBC /* SecondViewController.swift in Sources */,
 				FCC81C902332E6AB00D88EBC /* AppDelegate.swift in Sources */,
-				FC1E30FA23464EB300BFCEB8 /* databaseView.swift in Sources */,
 				FC1E30BC2343A95E00BFCEB8 /* OverviewViewController.swift in Sources */,
 				FCB02203233C14CB00FB1B64 /* ThirdViewController.swift in Sources */,
 				FCC81C922332E6AB00D88EBC /* FirstViewController.swift in Sources */,
@@ -892,6 +896,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FCFD695E234AD7A400B4D14F /* MainData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FCFD695F234AD7A400B4D14F /* MainData.xcdatamodel */,
+			);
+			currentVersion = FCFD695F234AD7A400B4D14F /* MainData.xcdatamodel */;
+			path = MainData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = FCC81C842332E6AB00D88EBC /* Project object */;
 }

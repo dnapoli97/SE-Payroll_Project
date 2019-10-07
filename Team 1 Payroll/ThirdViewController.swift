@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class ThirdViewController: UIViewController {
 
+    var managedObjectContext: NSManagedObjectContext!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
