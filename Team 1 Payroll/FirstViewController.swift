@@ -29,6 +29,34 @@ class FirstViewController: UIViewController {
             fatalError("This view needs a persistent container.")
         }
         
+        let fetchRequest = NSFetchRequest<Employee_Info>(entityName: "Employee_Info")
+        do{
+            let results = try managedObjectContext.fetch(fetchRequest)
+            var adminInDb = false
+            for result in results{
+                if "admin" == result.username{
+                    adminInDb = true
+                }
+            }
+            if !adminInDb {
+                guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee_Info", in: managedObjectContext) else {
+                    return
+                }
+                
+                let newValue = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
+                
+                newValue.setValue("admin", forKey: "username")
+                newValue.setValue("admin", forKey: "password")
+                do{
+                    try managedObjectContext.save()
+                    print("Saved: true")
+                }catch{
+                    print("Saving Error")
+                }
+            }
+        }catch{
+            print(error)
+        }
     }
     
     @IBOutlet weak var loginbutton: UIButton!
@@ -41,6 +69,7 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var invalidLogin: UILabel!
     
     @IBAction func loginPressed(_ sender: Any) {
+        
         if checkLogin{
             self.performSegue(withIdentifier: "toOverview", sender: self)
         }
@@ -63,7 +92,7 @@ extension FirstViewController{
             newValue.setValue(value, forKey: key)
             do{
                 try context.save()
-                print("Saved: \(value)")
+                print("Saved: true")
             }catch{
                 print("Saving Error")
             }
