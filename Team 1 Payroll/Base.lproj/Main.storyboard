@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,7 +29,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mH5-3h-OKw">
-                                <rect key="frame" x="99" y="589" width="216" height="34"/>
+                                <rect key="frame" x="101" y="589" width="214" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
@@ -38,35 +38,60 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONj-cM-oay">
-                                <rect key="frame" x="165" y="646" width="84" height="30"/>
-                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Login">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xMP-Tn-pZK">
+                                <rect key="frame" x="99" y="427" width="214" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43" id="zjv-sP-vPD"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="Invalid username and/or password entered">
+                                        <attributes>
+                                            <color key="NSColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UbO-7I-Ctn">
+                                <rect key="frame" x="170" y="653" width="74" height="30"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Login">
+                                            <attributes>
+                                                <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <font key="NSFont" metaFont="system" size="15"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
                                 </state>
                                 <connections>
-                                    <action selector="loginPressed:" destination="9pv-A4-QxB" eventType="primaryActionTriggered" id="LUM-u7-JA2"/>
+                                    <action selector="loginPressed:" destination="9pv-A4-QxB" eventType="primaryActionTriggered" id="qCC-nb-SBR"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="mH5-3h-OKw" secondAttribute="trailing" constant="99" id="0wn-Gy-4Cr"/>
+                            <constraint firstItem="UbO-7I-Ctn" firstAttribute="centerX" secondItem="6l8-d5-J4Z" secondAttribute="centerX" id="2a8-Uu-TuJ"/>
+                            <constraint firstItem="UbO-7I-Ctn" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="170" id="A3b-rs-4TP"/>
                             <constraint firstItem="6l8-d5-J4Z" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="Afx-sP-rhV"/>
                             <constraint firstItem="6l8-d5-J4Z" firstAttribute="top" secondItem="Zoo-ee-DQo" secondAttribute="bottom" constant="8" id="BKx-SF-Stk"/>
                             <constraint firstAttribute="bottom" secondItem="Zoo-ee-DQo" secondAttribute="bottom" constant="386" id="D0W-S4-XEi"/>
                             <constraint firstItem="mH5-3h-OKw" firstAttribute="top" secondItem="v9R-Vu-tmn" secondAttribute="bottom" constant="8" id="QFt-wa-SeY"/>
                             <constraint firstItem="Zoo-ee-DQo" firstAttribute="leading" secondItem="v9R-Vu-tmn" secondAttribute="leading" id="RDP-GN-8BJ"/>
+                            <constraint firstItem="xMP-Tn-pZK" firstAttribute="trailing" secondItem="mH5-3h-OKw" secondAttribute="trailing" constant="-2" id="W8e-mz-x5K"/>
                             <constraint firstItem="Zoo-ee-DQo" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="101" id="XeU-Ky-KcK"/>
                             <constraint firstItem="Zoo-ee-DQo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mH5-3h-OKw" secondAttribute="leading" id="Z7A-xm-Jwy"/>
-                            <constraint firstItem="ONj-cM-oay" firstAttribute="top" secondItem="mH5-3h-OKw" secondAttribute="bottom" constant="23" id="ZfQ-ck-cm8"/>
-                            <constraint firstItem="ONj-cM-oay" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="165" id="auM-w8-v7K"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="v9R-Vu-tmn" secondAttribute="trailing" symbolic="YES" id="bZe-K0-5Gv"/>
-                            <constraint firstItem="ONj-cM-oay" firstAttribute="centerX" secondItem="6l8-d5-J4Z" secondAttribute="centerX" id="c1Q-HT-NCL"/>
                             <constraint firstAttribute="bottom" secondItem="mH5-3h-OKw" secondAttribute="bottom" constant="273" id="fHN-DB-yo3"/>
-                            <constraint firstItem="ONj-cM-oay" firstAttribute="centerX" secondItem="mH5-3h-OKw" secondAttribute="centerX" id="qOl-hT-bxu"/>
+                            <constraint firstItem="UbO-7I-Ctn" firstAttribute="top" secondItem="mH5-3h-OKw" secondAttribute="bottom" constant="30" id="hCI-QP-BzR"/>
+                            <constraint firstItem="xMP-Tn-pZK" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="383" id="pHD-i7-3ZO"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="Zoo-ee-DQo" secondAttribute="trailing" constant="234" id="tEE-eh-nNY"/>
                             <constraint firstItem="6l8-d5-J4Z" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="100.5" id="zZ1-M8-3Ak"/>
+                            <constraint firstItem="xMP-Tn-pZK" firstAttribute="leading" secondItem="Zoo-ee-DQo" secondAttribute="leading" constant="-2" id="zp9-Vf-FFi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
@@ -74,7 +99,8 @@
                         <color key="badgeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBarItem>
                     <connections>
-                        <outlet property="loginButton" destination="ONj-cM-oay" id="Tec-Qy-Ndc"/>
+                        <outlet property="invalidLogin" destination="xMP-Tn-pZK" id="C9H-5d-DPF"/>
+                        <outlet property="loginbutton" destination="UbO-7I-Ctn" id="9EW-ea-usH"/>
                         <outlet property="password" destination="mH5-3h-OKw" id="oKb-23-dxI"/>
                         <outlet property="tabBar" destination="acW-dT-cKf" id="ykc-yT-Vts"/>
                         <outlet property="username" destination="6l8-d5-J4Z" id="8gp-be-7Al"/>

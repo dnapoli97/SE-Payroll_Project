@@ -31,21 +31,22 @@ class FirstViewController: UIViewController {
         
     }
     
+    @IBOutlet weak var loginbutton: UIButton!
     @IBOutlet weak var tabBar: UITabBarItem!
     
     @IBOutlet weak var password: UITextField!
     
     @IBOutlet weak var username: UITextField!
     
-    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var invalidLogin: UILabel!
     
     @IBAction func loginPressed(_ sender: Any) {
-        
-        if checkUsername{
+        if checkLogin{
             self.performSegue(withIdentifier: "toOverview", sender: self)
         }
-    
     }
+    
+    
     
 }
 
@@ -77,8 +78,8 @@ extension FirstViewController{
             do{
                 let results = try context.fetch(fetchRequest)
                 for result in results{
-                    if let testValue = result.username{
-                        print(testValue)
+                    if let testValue = result.accessibilityElements{
+                        print(testValue.description)
                     }
                 }
             }catch{
@@ -87,20 +88,30 @@ extension FirstViewController{
         }
     }
     
-    var checkUsername: Bool {
+    var checkLogin: Bool {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
             let context = appDelegate.persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<Employee_Info>(entityName: "Employee_Info")
             let user = username.text
+            let pass = password.text
             do{
                 let results = try context.fetch(fetchRequest)
                 for result in results{
+                    print(result)
                     if user == result.username{
-                        return true
+                        if pass == result.password{
+                            return true
+                        }else{
+                            invalidLogin.isHidden = false
+                            return false
+                        }
+                    }else{
+                        invalidLogin.isHidden = false
+                        return false
                     }
                 }
             }catch{
-                print("Could not retrieve")
+                print(error)
             }
         }
         return false

@@ -3,7 +3,7 @@
     <entity name="Employee_Info" representedClassName="Employee_Info" syncable="YES" codeGenerationType="class">
         <attribute name="fname" optional="YES" attributeType="String"/>
         <attribute name="lname" optional="YES" attributeType="String"/>
-        <attribute name="password" optional="YES" attributeType="String" minValueString="6" maxValueString="20"/>
+        <attribute name="password" optional="YES" attributeType="String" minValueString="4" maxValueString="20"/>
         <attribute name="username" attributeType="String"/>
     </entity>
     <elements>
