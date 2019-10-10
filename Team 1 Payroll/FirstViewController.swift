@@ -14,12 +14,6 @@ class FirstViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if let nextVC = segue.destination as? OverviewViewController {
-        nextVC.managedObjectContext = managedObjectContext
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +23,7 @@ class FirstViewController: UIViewController {
             fatalError("This view needs a persistent container.")
         }
         
-        let fetchRequest = NSFetchRequest<Employee_Info>(entityName: "Employee_Info")
+        let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
         do{
             let results = try managedObjectContext.fetch(fetchRequest)
             var adminInDb = false
@@ -39,7 +33,7 @@ class FirstViewController: UIViewController {
                 }
             }
             if !adminInDb {
-                guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee_Info", in: managedObjectContext) else {
+                guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee", in: managedObjectContext) else {
                     return
                 }
                 
@@ -83,7 +77,7 @@ extension FirstViewController{
     func save(value: String, key: String){
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
             let context = appDelegate.persistentContainer.viewContext
-            guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee_Info", in: context) else {
+            guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee", in: context) else {
                 return
             }
             
@@ -102,7 +96,7 @@ extension FirstViewController{
     func retrieveValue(){
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
             let context = appDelegate.persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<Employee_Info>(entityName: "Employee_Info")
+            let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
         
             do{
                 let results = try context.fetch(fetchRequest)
@@ -120,13 +114,12 @@ extension FirstViewController{
     var checkLogin: Bool {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
             let context = appDelegate.persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<Employee_Info>(entityName: "Employee_Info")
+            let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
             let user = username.text
             let pass = password.text
             do{
                 let results = try context.fetch(fetchRequest)
                 for result in results{
-                    print(result)
                     if user == result.username{
                         if pass == result.password{
                             return true

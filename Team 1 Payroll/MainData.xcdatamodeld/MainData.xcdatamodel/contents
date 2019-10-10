@@ -1,12 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14903" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Employee_Info" representedClassName="Employee_Info" syncable="YES" codeGenerationType="class">
-        <attribute name="fname" optional="YES" attributeType="String"/>
-        <attribute name="lname" optional="YES" attributeType="String"/>
-        <attribute name="password" optional="YES" attributeType="String" minValueString="4" maxValueString="20"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15400" systemVersion="19A583" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Employee" representedClassName="Employee" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="ismanager" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="password" attributeType="String" minValueString="4" maxValueString="20"/>
         <attribute name="username" attributeType="String"/>
+        <relationship name="info" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee_Info" inverseName="employee" inverseEntity="Employee_Info"/>
+        <relationship name="pay" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pay" inverseName="employee" inverseEntity="Pay"/>
+        <relationship name="schedule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Schedule" inverseName="employee" inverseEntity="Schedule"/>
+    </entity>
+    <entity name="Employee_Info" representedClassName="Employee_Info" syncable="YES" codeGenerationType="class">
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="homeAddress" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="wages" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="info" inverseEntity="Employee"/>
+    </entity>
+    <entity name="Pay" representedClassName="Pay" syncable="YES" codeGenerationType="class">
+        <attribute name="clockIn" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="clockOut" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="time" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="wage" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="pay" inverseEntity="Employee"/>
+        <relationship name="schedule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Schedule" inverseName="pay" inverseEntity="Schedule"/>
+    </entity>
+    <entity name="Schedule" representedClassName="Schedule" syncable="YES" codeGenerationType="class">
+        <attribute name="day0" optional="YES" attributeType="String"/>
+        <attribute name="day1" optional="YES" attributeType="String"/>
+        <attribute name="day2" optional="YES" attributeType="String"/>
+        <attribute name="day3" optional="YES" attributeType="String"/>
+        <attribute name="day4" optional="YES" attributeType="String"/>
+        <attribute name="day5" optional="YES" attributeType="String"/>
+        <attribute name="day6" optional="YES" attributeType="String"/>
+        <attribute name="day7" optional="YES" attributeType="String"/>
+        <attribute name="day8" optional="YES" attributeType="String"/>
+        <attribute name="day9" optional="YES" attributeType="String"/>
+        <attribute name="day10" optional="YES" attributeType="String"/>
+        <attribute name="day11" optional="YES" attributeType="String"/>
+        <attribute name="day12" optional="YES" attributeType="String"/>
+        <attribute name="day13" optional="YES" attributeType="String"/>
+        <attribute name="day14" optional="YES" attributeType="String"/>
+        <attribute name="day15" optional="YES" attributeType="String"/>
+        <attribute name="day16" optional="YES" attributeType="String"/>
+        <attribute name="day17" optional="YES" attributeType="String"/>
+        <attribute name="day18" optional="YES" attributeType="String"/>
+        <attribute name="day19" optional="YES" attributeType="String"/>
+        <attribute name="day20" optional="YES" attributeType="String"/>
+        <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="schedule" inverseEntity="Employee"/>
+        <relationship name="pay" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pay" inverseName="schedule" inverseEntity="Pay"/>
     </entity>
     <elements>
-        <element name="Employee_Info" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="Employee" positionX="99.1015625" positionY="28.36328125" width="128" height="148"/>
+        <element name="Employee_Info" positionX="-117.6171875" positionY="1.3515625" width="128" height="133"/>
+        <element name="Schedule" positionX="294.8125" positionY="33.60546875" width="128" height="388"/>
+        <element name="Pay" positionX="0.10546875" positionY="359.25" width="128" height="133"/>
     </elements>
 </model>
