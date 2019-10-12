@@ -13,47 +13,46 @@
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="homeAddress" optional="YES" attributeType="String"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
-        <attribute name="phoneNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="wages" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="info" inverseEntity="Employee"/>
     </entity>
     <entity name="Pay" representedClassName="Pay" syncable="YES" codeGenerationType="class">
-        <attribute name="clockIn" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="clockOut" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="clockIn" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="clockOut" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="time" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="wage" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="pay" inverseEntity="Employee"/>
         <relationship name="schedule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Schedule" inverseName="pay" inverseEntity="Schedule"/>
     </entity>
     <entity name="Schedule" representedClassName="Schedule" syncable="YES" codeGenerationType="class">
-        <attribute name="day0" optional="YES" attributeType="String"/>
-        <attribute name="day1" optional="YES" attributeType="String"/>
-        <attribute name="day2" optional="YES" attributeType="String"/>
-        <attribute name="day3" optional="YES" attributeType="String"/>
-        <attribute name="day4" optional="YES" attributeType="String"/>
-        <attribute name="day5" optional="YES" attributeType="String"/>
-        <attribute name="day6" optional="YES" attributeType="String"/>
-        <attribute name="day7" optional="YES" attributeType="String"/>
-        <attribute name="day8" optional="YES" attributeType="String"/>
-        <attribute name="day9" optional="YES" attributeType="String"/>
-        <attribute name="day10" optional="YES" attributeType="String"/>
-        <attribute name="day11" optional="YES" attributeType="String"/>
-        <attribute name="day12" optional="YES" attributeType="String"/>
-        <attribute name="day13" optional="YES" attributeType="String"/>
-        <attribute name="day14" optional="YES" attributeType="String"/>
-        <attribute name="day15" optional="YES" attributeType="String"/>
-        <attribute name="day16" optional="YES" attributeType="String"/>
-        <attribute name="day17" optional="YES" attributeType="String"/>
-        <attribute name="day18" optional="YES" attributeType="String"/>
-        <attribute name="day19" optional="YES" attributeType="String"/>
-        <attribute name="day20" optional="YES" attributeType="String"/>
+        <attribute name="day0" attributeType="String" defaultValueString="-"/>
+        <attribute name="day1" attributeType="String" defaultValueString="-"/>
+        <attribute name="day2" optional="YES" attributeType="String" defaultValueString="-"/>
+        <attribute name="day3" attributeType="String" defaultValueString="-"/>
+        <attribute name="day4" attributeType="String" defaultValueString="-"/>
+        <attribute name="day5" optional="YES" attributeType="String" defaultValueString="-"/>
+        <attribute name="day6" attributeType="String" defaultValueString="-"/>
+        <attribute name="day7" attributeType="String" defaultValueString="-"/>
+        <attribute name="day8" attributeType="String" defaultValueString="-"/>
+        <attribute name="day9" attributeType="String" defaultValueString="-"/>
+        <attribute name="day10" attributeType="String" defaultValueString="-"/>
+        <attribute name="day11" attributeType="String" defaultValueString="-"/>
+        <attribute name="day12" attributeType="String" defaultValueString="-"/>
+        <attribute name="day13" attributeType="String" defaultValueString="-"/>
+        <attribute name="day14" attributeType="String" defaultValueString="-"/>
+        <attribute name="day15" attributeType="String" defaultValueString="-"/>
+        <attribute name="day16" attributeType="String" defaultValueString="-"/>
+        <attribute name="day17" attributeType="String" defaultValueString="-"/>
+        <attribute name="day18" attributeType="String" defaultValueString="-"/>
+        <attribute name="day19" attributeType="String" defaultValueString="-"/>
+        <attribute name="day20" attributeType="String" defaultValueString="-"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="schedule" inverseEntity="Employee"/>
         <relationship name="pay" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pay" inverseName="schedule" inverseEntity="Pay"/>
     </entity>
     <elements>
         <element name="Employee" positionX="99.1015625" positionY="28.36328125" width="128" height="148"/>
-        <element name="Employee_Info" positionX="-117.6171875" positionY="1.3515625" width="128" height="133"/>
-        <element name="Schedule" positionX="294.8125" positionY="33.60546875" width="128" height="388"/>
+        <element name="Employee_Info" positionX="-117.6171875" positionY="1.3515625" width="128" height="118"/>
         <element name="Pay" positionX="0.10546875" positionY="359.25" width="128" height="133"/>
+        <element name="Schedule" positionX="294.8125" positionY="33.60546875" width="128" height="388"/>
     </elements>
 </model>

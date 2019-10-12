@@ -11,18 +11,48 @@ import CoreData
 
 class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
+    var currentLogin: Employee!
+    var managedObjectContext: NSManagedObjectContext!
+    var empNames: [String]!
+    var emps:[Employee]!
+    var empsInfo:[Employee_Info]!
+    var empssch:[Schedule]!
+    var empspay:[Pay]!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "personal" {
+            let nextViewController = segue.destination as! personalViewController
+            nextViewController.currentLogin = currentLogin
+            nextViewController.managedObjectContext = managedObjectContext
+        }
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        2
+        1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-         let fetchRequest = NSFetchRequest<Employee_Info>(entityName: "Employee_Info")
-               
+         let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
             do{
                 let results = try managedObjectContext.fetch(fetchRequest)
                 for result in results{
-                    empsL.append(result.lastName!)
-                    empsF.append(result.firstName!)
+                    if let empinfo = result.info{
+                        if let first = empinfo.firstName{
+                            if let last = empinfo.lastName{
+                                let name = last + ", " + first
+                                empNames.append(name)
+                                if let empsch = result.schedule{
+                                    empssch.append(empsch)
+                                }
+                                if let emppay = result.pay{
+                                    empspay.append(emppay)
+                                }
+                                empsInfo.append(empinfo)
+                                emps.append(result)
+                            }
+                        }
+                    }
                 }
                 return results.count
             }catch{
@@ -31,24 +61,18 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     return 0
 }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return empsL[row]
+        return empNames[row]
     }
-
-    var managedObjectContext: NSManagedObjectContext!
-    
-    var empsL: [String]!
-    var empsF: [String]!
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if let nextVC = segue.destination as? OverviewViewController {
-        nextVC.managedObjectContext = managedObjectContext
-        }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        test.text = empsInfo![component].homeAddress
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        if managedObjectContext == nil{
+            managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        }
         
         guard managedObjectContext != nil else {
             fatalError("This view needs a persistent container.")
@@ -63,6 +87,12 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         picker.dataSource = self
         picker.delegate = self
         
+        
+        empNames = []
+        empsInfo = []
+        emps = []
+        empssch = []
+        empspay = []
     }
     
     @IBOutlet weak var newEmployee: UIView!
@@ -71,7 +101,8 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var ApprovePay: UIView!
     @IBOutlet weak var Wages: UIView!
     @IBOutlet weak var tabBar: UISegmentedControl!
-     @IBOutlet weak var picker: UIPickerView!
+    @IBOutlet weak var picker: UIPickerView!
+    @IBOutlet weak var test: UILabel!
     
     @IBAction func indexChanged(_ sender: Any) {
         switch tabBar.selectedSegmentIndex {
@@ -122,10 +153,6 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     
     func ScheduleViewload(){
         
-    }
-    
-    @IBAction func logout(_ sender: Any) {
-        self.performSegue(withIdentifier: "logout", sender: self)
     }
 
     @IBAction func topersonal(_ sender: Any) {

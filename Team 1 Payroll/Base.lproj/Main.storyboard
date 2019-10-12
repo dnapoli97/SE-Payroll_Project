@@ -11,35 +11,35 @@
         <!--Manager Login-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="9pv-A4-QxB" customClass="FirstViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Manager Login" modalPresentationStyle="fullScreen" id="9pv-A4-QxB" customClass="FirstViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9R-Vu-tmn">
-                                <rect key="frame" x="101" y="506" width="74" height="21"/>
+                                <rect key="frame" x="101" y="560" width="74" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoo-ee-DQo">
-                                <rect key="frame" x="101" y="435" width="79" height="21"/>
+                                <rect key="frame" x="101" y="489" width="79" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mH5-3h-OKw">
-                                <rect key="frame" x="101" y="535" width="214" height="34"/>
+                                <rect key="frame" x="101" y="589" width="214" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6l8-d5-J4Z">
-                                <rect key="frame" x="100.5" y="464" width="213" height="34"/>
+                                <rect key="frame" x="100.5" y="518" width="213" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xMP-Tn-pZK">
-                                <rect key="frame" x="99" y="383" width="214" height="43"/>
+                                <rect key="frame" x="99" y="427" width="214" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43" id="zjv-sP-vPD"/>
                                 </constraints>
@@ -55,7 +55,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UbO-7I-Ctn">
-                                <rect key="frame" x="170" y="599" width="74" height="30"/>
+                                <rect key="frame" x="170" y="653" width="74" height="30"/>
                                 <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
@@ -116,11 +116,31 @@
         <!--personalView-->
         <scene sceneID="MJm-zf-hew">
             <objects>
-                <viewController title="personalView" modalPresentationStyle="fullScreen" id="w4I-e1-Gjj" customClass="personalViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="personalView" title="personalView" modalPresentationStyle="fullScreen" id="w4I-e1-Gjj" customClass="personalViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xR8-8o-YIC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Le-1y-QMF">
+                                <rect key="frame" x="0.0" y="83" width="414" height="779"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6CA-B9-7Ax">
+                                <rect key="frame" x="0.0" y="83" width="414" height="754"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6mR-uR-9Gb">
+                                <rect key="frame" x="0.0" y="83" width="414" height="779"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lT9-lV-dap">
+                                <rect key="frame" x="0.0" y="83" width="414" height="779"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MVz-ZR-HY4">
                                 <rect key="frame" x="331" y="832" width="63" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -133,7 +153,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="Logout:" destination="w4I-e1-Gjj" eventType="primaryActionTriggered" id="RhQ-AU-dCb"/>
+                                    <segue destination="NXu-qa-rfR" kind="unwind" identifier="exit" unwindAction="cancel:" id="9r9-kZ-D8f"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Ez-vU-OBq">
@@ -146,31 +166,51 @@
                                     <action selector="backToManager:" destination="w4I-e1-Gjj" eventType="touchUpInside" id="Sy0-B7-cPH"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aFP-Gd-3Qv">
+                                <rect key="frame" x="20" y="44" width="374" height="32"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                    <segment title="third"/>
+                                    <segment title="fourth"/>
+                                </segments>
+                                <connections>
+                                    <action selector="indexChange:" destination="w4I-e1-Gjj" eventType="valueChanged" id="hhy-Ns-sLs"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="aFP-Gd-3Qv" firstAttribute="top" secondItem="VBL-Nu-3Dj" secondAttribute="top" id="3Ma-Mw-Uw9"/>
+                            <constraint firstItem="aFP-Gd-3Qv" firstAttribute="leading" secondItem="xR8-8o-YIC" secondAttribute="leadingMargin" id="4l4-41-3Gv"/>
                             <constraint firstItem="4Ez-vU-OBq" firstAttribute="top" secondItem="MVz-ZR-HY4" secondAttribute="top" id="9v6-DC-xE9"/>
                             <constraint firstItem="MVz-ZR-HY4" firstAttribute="bottom" secondItem="VBL-Nu-3Dj" secondAttribute="bottom" id="P7b-jR-xwi"/>
                             <constraint firstItem="4Ez-vU-OBq" firstAttribute="leading" secondItem="VBL-Nu-3Dj" secondAttribute="leading" constant="231" id="Z3N-cu-Tp3"/>
                             <constraint firstItem="MVz-ZR-HY4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4Ez-vU-OBq" secondAttribute="trailing" constant="2" id="dPZ-oM-gfk"/>
+                            <constraint firstItem="aFP-Gd-3Qv" firstAttribute="trailing" secondItem="MVz-ZR-HY4" secondAttribute="trailing" id="gry-lE-437"/>
                             <constraint firstItem="VBL-Nu-3Dj" firstAttribute="trailing" secondItem="MVz-ZR-HY4" secondAttribute="trailing" constant="20" id="ieX-cA-byG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="VBL-Nu-3Dj"/>
                     </view>
                     <navigationItem key="navigationItem" id="Kve-yK-UBX"/>
                     <connections>
+                        <outlet property="payStub" destination="6mR-uR-9Gb" id="zPP-3H-bBl"/>
+                        <outlet property="personal_Info" destination="5Le-1y-QMF" id="BQX-wC-qwI"/>
+                        <outlet property="schedule" destination="6CA-B9-7Ax" id="VbF-ME-emd"/>
+                        <outlet property="tabBar" destination="aFP-Gd-3Qv" id="L8a-aw-UWI"/>
+                        <outlet property="temp" destination="lT9-lV-dap" id="udi-xs-Mzx"/>
                         <segue destination="4v2-aG-3N5" kind="show" identifier="manager" id="aOA-CG-OMV"/>
-                        <segue destination="49e-Tb-3d3" kind="show" identifier="logout" id="5YR-1k-aZk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Al6-ex-689" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="NXu-qa-rfR" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1616" y="-177"/>
+            <point key="canvasLocation" x="1616" y="-94"/>
         </scene>
         <!--Overview-->
         <scene sceneID="m9I-IU-R9t">
             <objects>
-                <viewController title="Overview" modalPresentationStyle="fullScreen" id="4v2-aG-3N5" customClass="OverviewViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Overview" title="Overview" modalPresentationStyle="fullScreen" id="4v2-aG-3N5" customClass="OverviewViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOc-4h-PG0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <subviews>
@@ -204,11 +244,20 @@
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x5C-sf-tbu">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="216"/>
                                     </pickerView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k4z-DC-hpI">
+                                        <rect key="frame" x="159" y="224" width="96" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstItem="x5C-sf-tbu" firstAttribute="centerX" secondItem="zsh-kv-RVE" secondAttribute="centerX" id="EcU-9T-BjG"/>
                                     <constraint firstItem="x5C-sf-tbu" firstAttribute="leading" secondItem="nUk-MO-DO0" secondAttribute="leading" id="FdO-Fn-Hpm"/>
+                                    <constraint firstItem="k4z-DC-hpI" firstAttribute="leading" secondItem="nUk-MO-DO0" secondAttribute="leading" constant="159" id="SiA-10-t2y"/>
+                                    <constraint firstItem="k4z-DC-hpI" firstAttribute="centerX" secondItem="x5C-sf-tbu" secondAttribute="centerX" id="Xgh-EO-W2K"/>
+                                    <constraint firstItem="k4z-DC-hpI" firstAttribute="top" secondItem="x5C-sf-tbu" secondAttribute="bottom" constant="8" id="cDh-Ua-xyu"/>
                                     <constraint firstItem="x5C-sf-tbu" firstAttribute="top" secondItem="nUk-MO-DO0" secondAttribute="top" id="wkq-RX-9Pi"/>
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="nUk-MO-DO0"/>
@@ -238,7 +287,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="logout:" destination="4v2-aG-3N5" eventType="primaryActionTriggered" id="a4h-Az-eKT"/>
+                                    <segue destination="6qB-u6-i89" kind="unwind" identifier="exit" unwindAction="cancel:" id="PZf-tD-MQq"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ZO-bQ-g0v">
@@ -283,39 +332,23 @@
                         <outlet property="newEmployee" destination="5R9-QO-eoj" id="89r-eu-T7f"/>
                         <outlet property="picker" destination="x5C-sf-tbu" id="j8S-ab-Oqm"/>
                         <outlet property="tabBar" destination="h9J-On-ivi" id="b3l-aJ-AVr"/>
+                        <outlet property="test" destination="k4z-DC-hpI" id="yq5-b7-7r9"/>
                         <segue destination="w4I-e1-Gjj" kind="show" identifier="personal" id="131-D9-V4F"/>
-                        <segue destination="49e-Tb-3d3" kind="show" identifier="logout" id="EBa-DF-z1v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rja-qD-eUh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="6qB-u6-i89" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1616" y="-869"/>
+            <point key="canvasLocation" x="1615.9420289855075" y="-1047.3214285714284"/>
         </scene>
         <!--Employee Login-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="8rJ-Kc-sve" customClass="SecondViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Employee Login" modalPresentationStyle="fullScreen" id="8rJ-Kc-sve" customClass="SecondViewController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lrr-KV-oUJ">
-                                <rect key="frame" x="20" y="0.0" width="374" height="19"/>
-                                <segments>
-                                    <segment title="First"/>
-                                    <segment title="Second"/>
-                                    <segment title="Third"/>
-                                    <segment title="Fourth"/>
-                                </segments>
-                            </segmentedControl>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="lrr-KV-oUJ" secondAttribute="bottom" constant="741" id="6gj-Yr-XPw"/>
-                            <constraint firstItem="lrr-KV-oUJ" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" id="RNH-8U-jtQ"/>
-                            <constraint firstItem="lrr-KV-oUJ" firstAttribute="top" secondItem="O1u-W8-tvY" secondAttribute="top" id="Tzn-c6-Xn2"/>
-                            <constraint firstItem="lrr-KV-oUJ" firstAttribute="trailing" secondItem="QS5-Rx-YEW" secondAttribute="trailingMargin" id="wJA-Om-kpF"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Employee Login" image="second" id="cPa-gy-q4n"/>
@@ -330,7 +363,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController modalPresentationStyle="fullScreen" id="49e-Tb-3d3" sceneMemberID="viewController">
+                <tabBarController modalPresentationStyle="fullScreen" id="49e-Tb-3d3" customClass="TabBarController" customModule="Team_1_Payroll" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="6PT-KJ-LF8"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" selectionIndicatorImage="first" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
@@ -352,8 +385,7 @@
         <image name="second" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="EBa-DF-z1v"/>
-        <segue reference="aOA-CG-OMV"/>
+        <segue reference="nCX-2Q-0oD"/>
         <segue reference="131-D9-V4F"/>
     </inferredMetricsTieBreakers>
 </document>

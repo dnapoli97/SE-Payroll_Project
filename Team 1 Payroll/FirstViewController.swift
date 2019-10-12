@@ -13,6 +13,18 @@ import CoreData
 class FirstViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
+    var currentLogin: Employee!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toOverview" {
+            let nextViewController = segue.destination as! OverviewViewController
+            nextViewController.currentLogin = currentLogin
+               }
+        if segue.identifier == "toPersonal" {
+            let nextViewController = segue.destination as! personalViewController
+            nextViewController.currentLogin = currentLogin
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +50,6 @@ class FirstViewController: UIViewController {
                 }
                 
                 let newValue = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
-                
                 newValue.setValue("admin", forKey: "username")
                 newValue.setValue("admin", forKey: "password")
                 do{
@@ -65,6 +76,8 @@ class FirstViewController: UIViewController {
     @IBAction func loginPressed(_ sender: Any) {
         
         if checkLogin{
+            username.text = nil
+            password.text = nil
             self.performSegue(withIdentifier: "toOverview", sender: self)
         }
     }
@@ -122,6 +135,7 @@ extension FirstViewController{
                 for result in results{
                     if user == result.username{
                         if pass == result.password{
+                            currentLogin = result
                             return true
                         }else{
                             invalidLogin.isHidden = false
