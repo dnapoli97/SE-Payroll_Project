@@ -64,7 +64,12 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         return empNames[row]
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        test.text = empsInfo![component].homeAddress
+        test.text = emps![row].password
+    
+    
+    
+    
+    
     }
     
     override func viewDidLoad() {
@@ -78,11 +83,12 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             fatalError("This view needs a persistent container.")
         }
         
-        Schedule.isHidden = false
+        ScheduleView.isHidden = false
         WorkTimes.isHidden = true
         ApprovePay.isHidden = true
         Wages.isHidden = true
         newEmployee.isHidden = true
+        passwordDontMatch.isHidden = true
         
         picker.dataSource = self
         picker.delegate = self
@@ -96,7 +102,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     @IBOutlet weak var newEmployee: UIView!
-    @IBOutlet weak var Schedule: UIView!
+    @IBOutlet weak var ScheduleView: UIView!
     @IBOutlet weak var WorkTimes: UIView!
     @IBOutlet weak var ApprovePay: UIView!
     @IBOutlet weak var Wages: UIView!
@@ -107,59 +113,136 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBAction func indexChanged(_ sender: Any) {
         switch tabBar.selectedSegmentIndex {
         case 0:
-            Schedule.isHidden = false
+            ScheduleView.isHidden = false
             WorkTimes.isHidden = true
             ApprovePay.isHidden = true
             Wages.isHidden = true
             newEmployee.isHidden = true
             break
         case 1:
-            Schedule.isHidden = true
+            ScheduleView.isHidden = true
             WorkTimes.isHidden = false
             ApprovePay.isHidden = true
             Wages.isHidden = true
             newEmployee.isHidden = true
             break
         case 2:
-            Schedule.isHidden = true
+            ScheduleView.isHidden = true
             WorkTimes.isHidden = true
             ApprovePay.isHidden = false
             Wages.isHidden = true
             newEmployee.isHidden = true
             break
         case 3:
-            Schedule.isHidden = true
+            ScheduleView.isHidden = true
             WorkTimes.isHidden = true
             ApprovePay.isHidden = true
             Wages.isHidden = false
             newEmployee.isHidden = true
             break
         case 4:
-            Schedule.isHidden = true
+            ScheduleView.isHidden = true
             WorkTimes.isHidden = true
             ApprovePay.isHidden = true
             Wages.isHidden = true
             newEmployee.isHidden = false
             break
         default:
-            Schedule.isHidden = false
+            ScheduleView.isHidden = false
             WorkTimes.isHidden = true
             ApprovePay.isHidden = true
             Wages.isHidden = true
+            newEmployee.isHidden = true
             break
         }
     }
     
     
-    func ScheduleViewload(){
-        
-    }
+    
 
     @IBAction func topersonal(_ sender: Any) {
         self.performSegue(withIdentifier: "personal", sender: self)
     }
     
+    @IBAction func returnToMan(_ unwindSegue: UIStoryboardSegue) {}
+    
+    @IBOutlet weak var newFname: UITextField!
+    @IBOutlet weak var newLname: UITextField!
+    @IBOutlet weak var newUsername: UITextField!
+    @IBOutlet weak var newPassword: UITextField!
+    @IBOutlet weak var newConfirm: UITextField!
+    @IBOutlet weak var newPhone: UITextField!
+    @IBOutlet weak var newAddress: UITextField!
+    @IBOutlet weak var newManager: UISwitch!
+    @IBOutlet weak var newWage: UITextField!
+    @IBOutlet weak var passwordDontMatch: UILabel!
     
     
+    @IBAction func confirmNewEmployee(_ sender: Any) {
+        
+        if (newFname.text == "" || newLname.text == "" || newUsername.text == "" || newPassword.text == "" || newConfirm.text == "" || newAddress.text == "" || newWage.text == "" || newPassword.text != newConfirm.text){
+            
+            if newPassword.text != newConfirm.text {
+                newPassword.text = ""
+                newConfirm.text = ""
+                passwordDontMatch.isHidden = false
+            }
+            
+        }else{
+        
+            guard let entityDescriptionEmp = NSEntityDescription.entity(forEntityName: "Employee", in: managedObjectContext) else {
+                               return
+                           }
+            let newValueEmp = Employee(entity: entityDescriptionEmp, insertInto: managedObjectContext)
+            
+            guard let entityDescriptionInfo = NSEntityDescription.entity(forEntityName: "Employee_Info", in: managedObjectContext) else {
+                               return
+                           }
+            let newValueInfo = Employee_Info(entity: entityDescriptionInfo, insertInto: managedObjectContext)
+            
+            guard let entityDescriptionSchedule = NSEntityDescription.entity(forEntityName: "Schedule", in: managedObjectContext) else {
+                               return
+                           }
+            let newValueSchedule = Schedule(entity: entityDescriptionSchedule, insertInto: managedObjectContext)
+            
+            guard let entityDescriptionPay = NSEntityDescription.entity(forEntityName: "Pay", in: managedObjectContext) else {
+                               return
+                           }
+            let newValuePay = Pay(entity: entityDescriptionPay, insertInto: managedObjectContext)
+            
+            newValueEmp.setValue(emps.count, forKey: "id")
+            newValueEmp.setValue(newManager.isOn, forKey: "ismanager")
+            newValueEmp.setValue(newUsername.text, forKey: "username")
+            newValueEmp.setValue(newPassword.text, forKey: "password")
+            newValueInfo.setValue(newFname.text, forKey: "firstName")
+            newValueInfo.setValue(newLname.text, forKey: "lastName")
+            newValueInfo.setValue(newAddress.text, forKey: "homeAddress")
+            if newPhone.text != "" {
+                newValueInfo.setValue(Int64(newPhone.text!), forKey: "phoneNumber")
+            }
+            
+            newValuePay.setValue(Float(newWage.text!), forKey: "wage")
+            newValueEmp.setValue(newValueInfo, forKey: "info")
+            newValueEmp.setValue(newValueSchedule, forKey: "schedule")
+            newValueEmp.setValue(newValuePay, forKey: "pay")
+            do{
+                try managedObjectContext.save()
+                print("Saved: true")
+            }catch{
+                print(error)
+            }
+            
+            newFname.text = ""
+            newLname.text = ""
+            newUsername.text = ""
+            newPassword.text = ""
+            newConfirm.text = ""
+            newPhone.text = ""
+            newAddress.text = ""
+            newManager.setOn(false, animated: false)
+            newWage.text = ""
+            passwordDontMatch.isHidden = true
+        }
+    }
     
 }

@@ -49,10 +49,6 @@ class personalViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
     
-    @IBAction func backToManager(_ sender: Any) {
-        self.performSegue(withIdentifier: "manager", sender: self)
-    }
-    
     @IBAction func indexChange(_ sender: Any) {
         switch tabBar.selectedSegmentIndex {
         case 0:

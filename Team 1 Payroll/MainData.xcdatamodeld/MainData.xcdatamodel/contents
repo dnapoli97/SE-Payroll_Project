@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15400" systemVersion="19A583" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Employee" representedClassName="Employee" syncable="YES" codeGenerationType="class">
-        <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="ismanager" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="password" attributeType="String" minValueString="4" maxValueString="20"/>
         <attribute name="username" attributeType="String"/>
@@ -10,17 +10,17 @@
         <relationship name="schedule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Schedule" inverseName="employee" inverseEntity="Schedule"/>
     </entity>
     <entity name="Employee_Info" representedClassName="Employee_Info" syncable="YES" codeGenerationType="class">
-        <attribute name="firstName" optional="YES" attributeType="String"/>
-        <attribute name="homeAddress" optional="YES" attributeType="String"/>
-        <attribute name="lastName" optional="YES" attributeType="String"/>
-        <attribute name="phoneNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="firstName" attributeType="String"/>
+        <attribute name="homeAddress" attributeType="String"/>
+        <attribute name="lastName" attributeType="String"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="info" inverseEntity="Employee"/>
     </entity>
     <entity name="Pay" representedClassName="Pay" syncable="YES" codeGenerationType="class">
         <attribute name="clockIn" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="clockOut" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="time" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="wage" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="wage" attributeType="Float" defaultValueString="7.25" usesScalarValueType="YES"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="pay" inverseEntity="Employee"/>
         <relationship name="schedule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Schedule" inverseName="pay" inverseEntity="Schedule"/>
     </entity>

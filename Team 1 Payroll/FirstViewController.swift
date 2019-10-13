@@ -137,15 +137,10 @@ extension FirstViewController{
                         if pass == result.password{
                             currentLogin = result
                             return true
-                        }else{
-                            invalidLogin.isHidden = false
-                            return false
                         }
-                    }else{
-                        invalidLogin.isHidden = false
-                        return false
                     }
                 }
+                invalidLogin.isHidden = false
             }catch{
                 print(error)
             }
