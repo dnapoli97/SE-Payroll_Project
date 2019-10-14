@@ -48,13 +48,37 @@ class FirstViewController: UIViewController {
                 guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee", in: managedObjectContext) else {
                     return
                 }
+                guard let entityDescriptionInfo = NSEntityDescription.entity(forEntityName: "Employee_Info", in: managedObjectContext) else {
+                                   return
+                               }
+                    let newValueInfo = Employee_Info(entity: entityDescriptionInfo, insertInto: managedObjectContext)
                 
-                let newValue = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
+                    guard let entityDescriptionSchedule = NSEntityDescription.entity(forEntityName: "Schedule", in: managedObjectContext) else {
+                                   return
+                               }
+                    let newValueSchedule = Schedule(entity: entityDescriptionSchedule, insertInto: managedObjectContext)
+                
+                    guard let entityDescriptionPay =   NSEntityDescription.entity(forEntityName: "Pay", in: managedObjectContext) else {
+                                   return
+                               }
+                    let newValuePay = Pay(entity: entityDescriptionPay, insertInto: managedObjectContext)
+                
+                let newValue = Employee(entity: entityDescription, insertInto: managedObjectContext)
+                
                 newValue.setValue("admin", forKey: "username")
                 newValue.setValue("admin", forKey: "password")
+                newValue.setValue(0, forKey: "id")
+                newValue.setValue(true, forKey: "ismanager")
+                newValueInfo.setValue("admin", forKey: "firstName")
+                newValueInfo.setValue("admin", forKey: "lastName")
+                newValueInfo.setValue("123 admin st", forKey: "homeAddress")
+                newValuePay.setValue(10.00, forKey: "wage")
+                newValue.setValue(newValueInfo, forKey: "info")
+                newValue.setValue(newValueSchedule, forKey: "schedule")
+                newValue.setValue(newValuePay, forKey: "pay")
+                
                 do{
                     try managedObjectContext.save()
-                    print("Saved: true")
                 }catch{
                     print("Saving Error")
                 }
