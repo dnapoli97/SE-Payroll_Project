@@ -78,7 +78,11 @@ class FirstViewController: UIViewController {
         if checkLogin{
             username.text = nil
             password.text = nil
-            self.performSegue(withIdentifier: "toOverview", sender: self)
+            if currentLogin.ismanager{
+                self.performSegue(withIdentifier: "toOverview", sender: self)
+            }else{
+                self.performSegue(withIdentifier: "toPersonal", sender: self)
+            }
         }
     }
     

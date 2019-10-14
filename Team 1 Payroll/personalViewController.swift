@@ -39,6 +39,10 @@ class personalViewController: UIViewController {
             fatalError("This view needs a persistent container.")
         }
         
+        if !currentLogin.ismanager {
+            managerViewButton.isHidden = true
+        }
+        
     }
     
     @IBOutlet weak var schedule: UIView!
@@ -46,6 +50,7 @@ class personalViewController: UIViewController {
     @IBOutlet weak var payStub: UIView!
     @IBOutlet weak var temp: UIView!
     @IBOutlet weak var tabBar: UISegmentedControl!
+    @IBOutlet weak var managerViewButton: UIButton!
     
     var managedObjectContext: NSManagedObjectContext!
     
