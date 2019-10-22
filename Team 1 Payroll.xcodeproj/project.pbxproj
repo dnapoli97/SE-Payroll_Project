@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FC1E30BC2343A95E00BFCEB8 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1E30BB2343A95E00BFCEB8 /* OverviewViewController.swift */; };
 		FC1E30F52344741F00BFCEB8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1E30F42344741F00BFCEB8 /* CoreData.framework */; };
+		FC860203235772B800459C1A /* PunchCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC860202235772B800459C1A /* PunchCardViewController.swift */; };
 		FCB02203233C14CB00FB1B64 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB02202233C14CB00FB1B64 /* ThirdViewController.swift */; };
 		FCB5F79A234EB20400CA542A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FCC81CC22332E77C00D88EBC /* libsqlite3.tbd */; };
 		FCB5F79E234F9DFA00CA542A /* personalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB5F79D234F9DFA00CA542A /* personalViewController.swift */; };
@@ -161,6 +162,7 @@
 		FC1E30BD23445D2E00BFCEB8 /* Team 1 Payroll-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Team 1 Payroll-Bridging-Header.h"; sourceTree = "<group>"; };
 		FC1E30C123446A9300BFCEB8 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../../../../Downloads/SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
 		FC1E30F42344741F00BFCEB8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		FC860202235772B800459C1A /* PunchCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PunchCardViewController.swift; sourceTree = "<group>"; };
 		FCB02202233C14CB00FB1B64 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		FCB5F79D234F9DFA00CA542A /* personalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = personalViewController.swift; sourceTree = "<group>"; };
 		FCB5F7A82351907600CA542A /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				FCC81C912332E6AB00D88EBC /* FirstViewController.swift */,
 				FCC81C932332E6AB00D88EBC /* SecondViewController.swift */,
 				FCC81C952332E6AB00D88EBC /* Main.storyboard */,
+				FC860202235772B800459C1A /* PunchCardViewController.swift */,
 				FCB5F7A82351907600CA542A /* TabBarController.swift */,
 				FCB5F79D234F9DFA00CA542A /* personalViewController.swift */,
 				FCFD6968234AE20A00B4D14F /* PersistentContainer.swift */,
@@ -565,6 +568,7 @@
 				FCFD6969234AE20A00B4D14F /* PersistentContainer.swift in Sources */,
 				FCFD6960234AD7A400B4D14F /* MainData.xcdatamodeld in Sources */,
 				FCC81C942332E6AB00D88EBC /* SecondViewController.swift in Sources */,
+				FC860203235772B800459C1A /* PunchCardViewController.swift in Sources */,
 				FCB5F7A92351907600CA542A /* TabBarController.swift in Sources */,
 				FCC81C902332E6AB00D88EBC /* AppDelegate.swift in Sources */,
 				FCB5F79E234F9DFA00CA542A /* personalViewController.swift in Sources */,

@@ -17,8 +17,8 @@
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="info" inverseEntity="Employee"/>
     </entity>
     <entity name="Pay" representedClassName="Pay" syncable="YES" codeGenerationType="class">
-        <attribute name="clockIn" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="clockOut" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="clockIn" attributeType="Date" defaultDateTimeInterval="-31604340" usesScalarValueType="NO"/>
+        <attribute name="clockOut" attributeType="Date" defaultDateTimeInterval="-31604340" usesScalarValueType="NO"/>
         <attribute name="time" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="wage" attributeType="Float" defaultValueString="7.25" usesScalarValueType="YES"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="pay" inverseEntity="Employee"/>

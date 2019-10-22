@@ -28,6 +28,14 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         }
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,14 +54,17 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         newEmployee.isHidden = true
         passwordDontMatch.isHidden = true
         usernameTaken.isHidden = true
+        currentSave.isHidden = true
         followingSave.isHidden = true
         nextSave.isHidden = true
         nextWeek.isHidden = true
         followingWeek.isHidden = true
+        timeSaveButton.isHidden = true
         
         pickerSchedule.dataSource = self
         pickerSchedule.delegate = self
-        
+        timesPickerView.dataSource = self
+        timesPickerView.delegate = self
         
         empNames = []
         empsInfo = []
@@ -61,6 +72,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         empssch = []
         empspay = []
         empsUsername = []
+        
     }
     
     @IBOutlet weak var newEmployee: UIView!
@@ -81,6 +93,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             Wages.isHidden = true
             newEmployee.isHidden = true
             pickerSchedule.reloadAllComponents()
+            pickerSchedule.selectRow(timesPickerView.selectedRow(inComponent: 0), inComponent: 0, animated: false)
             break
         case 1:
             ScheduleView.isHidden = true
@@ -88,6 +101,21 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             ApprovePay.isHidden = true
             Wages.isHidden = true
             newEmployee.isHidden = true
+            clockInMonth.isUserInteractionEnabled = false
+            clockInDay.isUserInteractionEnabled = false
+            clockInYear.isUserInteractionEnabled = false
+            clockInHour.isUserInteractionEnabled = false
+            clockInMinutes.isUserInteractionEnabled = false
+            clockInPrefix.isUserInteractionEnabled = false
+            clockOutMonth.isUserInteractionEnabled = false
+            clockOutDay.isUserInteractionEnabled = false
+            clockOutYear.isUserInteractionEnabled = false
+            clockOutHour.isUserInteractionEnabled = false
+            clockOutMinutes.isUserInteractionEnabled = false
+            clockOutPrefix.isUserInteractionEnabled = false
+            dailyHours.isUserInteractionEnabled = false
+            timesPickerView.reloadAllComponents()
+            timesPickerView.selectRow(pickerSchedule.selectedRow(inComponent: 0), inComponent: 0, animated: false)
             break
         case 2:
             ScheduleView.isHidden = true
@@ -127,6 +155,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         self.performSegue(withIdentifier: "personal", sender: self)
     }
     
+    // Used to unwind from personal view
     @IBAction func returnToMan(_ unwindSegue: UIStoryboardSegue) {}
     
     // MARK: - Adding new Employee
@@ -152,6 +181,9 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 newPassword.text = ""
                 newConfirm.text = ""
                 passwordDontMatch.isHidden = false
+            }
+            if !empsUsername.contains(newUsername.text!){
+                usernameTaken.isHidden = true
             }
             
         }else{
@@ -194,7 +226,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 newValueEmp.setValue(newValuePay, forKey: "pay")
                 do{
                     try managedObjectContext.save()
-                    print("Saved: true")
+                    pickerSchedule.reloadAllComponents()
                 }catch{
                     print(error)
                 }
@@ -251,11 +283,19 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var followingEdit: UIButton!
     @IBOutlet weak var followingSave: UIButton!
     
+    // MARK: - Picker funcs
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
             1
         }
         
         func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+            empNames = []
+            empsInfo = []
+            emps = []
+            empssch = []
+            empspay = []
+            empsUsername = []
              let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
                 do{
@@ -310,7 +350,9 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             followingFriday.text = empssch[row].day18
             followingSaturday.text = empssch[row].day19
             followingSunday.text = empssch[row].day20
+            displayTimeStub(row: row)
             weekChange(pickerView.self)
+            
         }
     
     @IBAction func weekChange(_ sender: Any) {
@@ -536,6 +578,158 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     
+    // MARK: - Work Times
+    
+    @IBOutlet weak var timesPickerView: UIPickerView!
+    @IBOutlet weak var clockInMonth: UITextField!
+    @IBOutlet weak var clockInDay: UITextField!
+    @IBOutlet weak var clockInYear: UITextField!
+    @IBOutlet weak var clockInHour: UITextField!
+    @IBOutlet weak var clockInMinutes: UITextField!
+    @IBOutlet weak var clockInPrefix: UITextField!
+    @IBOutlet weak var clockOutMonth: UITextField!
+    @IBOutlet weak var clockOutDay: UITextField!
+    @IBOutlet weak var clockOutYear: UITextField!
+    @IBOutlet weak var clockOutHour: UITextField!
+    @IBOutlet weak var clockOutMinutes: UITextField!
+    @IBOutlet weak var clockOutPrefix: UITextField!
+    @IBOutlet weak var dailyHours: UITextField!
+    @IBOutlet weak var timeEditButton: UIButton!
+    @IBOutlet weak var timeSaveButton: UIButton!
+    let calendar = Calendar.current
+    
+    
+    @IBAction func timeEditPressed(_ sender: Any) {
+        clockInMonth.isUserInteractionEnabled = true
+        clockInDay.isUserInteractionEnabled = true
+        clockInYear.isUserInteractionEnabled = true
+        clockInHour.isUserInteractionEnabled = true
+        clockInMinutes.isUserInteractionEnabled = true
+        clockInPrefix.isUserInteractionEnabled = true
+        clockOutMonth.isUserInteractionEnabled = true
+        clockOutDay.isUserInteractionEnabled = true
+        clockOutYear.isUserInteractionEnabled = true
+        clockOutHour.isUserInteractionEnabled = true
+        clockOutMinutes.isUserInteractionEnabled = true
+        clockOutPrefix.isUserInteractionEnabled = true
+        dailyHours.isUserInteractionEnabled = true
+        timeSaveButton.isHidden = false
+    }
+    
+    @IBAction func timeSavePressed(_ sender: Any) {
+        let selectedemp = empspay[timesPickerView.selectedRow(inComponent: 0)]
+        
+        do{
+            let newClockInPrefix = clockInPrefix.text!.uppercased()
+            let newClockOutPrefix = clockOutPrefix.text!.uppercased()
+            let newClockInMonth = Int(clockInMonth.text!)
+            let newClockInDay = Int(clockInDay.text!)
+            let newClockInYear = Int(clockInYear.text!)
+            var newClockInHour = Int(clockInHour.text!)
+            let newClockInMinutes = Int(clockInMinutes.text!)
+            let newClockOutMonth = Int(clockOutMonth.text!)
+            let newClockOutDay = Int(clockOutDay.text!)
+            let newClockOutYear = Int(clockOutYear.text!)
+            var newClockOutHour = Int(clockOutHour.text!)
+            let newClockOutMinutes = Int(clockOutMinutes.text!)
+            
+            if newClockInPrefix == "AM" && newClockInHour == 12 {
+                newClockInHour = 0
+            }else if newClockInPrefix == "PM" && newClockInHour != 12{
+                newClockInHour = newClockInHour! + 12
+            }
+            if newClockOutPrefix == "AM" && newClockOutHour! == 12 {
+                newClockOutHour = 0
+            }else if newClockOutPrefix == "PM" && newClockOutHour! != 12{
+                newClockOutHour = newClockOutHour! + 12
+            }
+            
+            let clockInComponents = DateComponents(calendar: calendar, year: newClockInYear, month: newClockInMonth, day: newClockInDay, hour: newClockInHour, minute: newClockInMinutes)
+            let clockOutComponents = DateComponents(calendar: calendar, year: newClockOutYear, month: newClockOutMonth, day: newClockOutDay, hour: newClockOutHour, minute: newClockOutMinutes)
+            let newClockInDate = calendar.date(from: clockInComponents)
+            let newClockOutDate = calendar.date(from: clockOutComponents)
+            selectedemp.setValue(newClockInDate, forKey: "clockIn")
+            selectedemp.setValue(newClockOutDate, forKey: "clockOut")
+            try managedObjectContext.save()
+            displayTimeStub(row:timesPickerView.selectedRow(inComponent: 0))
+            clockInMonth.isUserInteractionEnabled = false
+            clockInDay.isUserInteractionEnabled = false
+            clockInYear.isUserInteractionEnabled = false
+            clockInHour.isUserInteractionEnabled = false
+            clockInMinutes.isUserInteractionEnabled = false
+            clockInPrefix.isUserInteractionEnabled = false
+            clockOutMonth.isUserInteractionEnabled = false
+            clockOutDay.isUserInteractionEnabled = false
+            clockOutYear.isUserInteractionEnabled = false
+            clockOutHour.isUserInteractionEnabled = false
+            clockOutMinutes.isUserInteractionEnabled = false
+            clockOutPrefix.isUserInteractionEnabled = false
+            dailyHours.isUserInteractionEnabled = false
+            timeSaveButton.isHidden = true
+            
+        }catch{
+            print(error)
+        }
+    
+    }
+    
+    func displayTimeStub(row: Int){
+        let allComponentsIn = calendar.dateComponents([.month, .day, .year, .hour, .minute], from: empspay[row].clockIn!)
+        clockInMonth.text = String(allComponentsIn.month!)
+        if clockInMonth.text!.count == 1 {
+            clockInMonth.text = "0" + clockInMonth.text!
+        }
+        clockInDay.text = String(allComponentsIn.day!)
+        if clockInDay.text!.count == 1 {
+            clockInDay.text = "0" + clockInDay.text!
+        }
+        clockInYear.text = String(allComponentsIn.year!)
+        clockInHour.text = String(allComponentsIn.hour!)
+        if Int(clockInHour.text!)! > 12{
+            clockInHour.text = String(Int(clockInHour.text!)! - 12)
+            clockInPrefix.text = "PM"
+        }else{
+            clockOutPrefix.text = "AM"
+        }
+        if Int(clockInHour.text!)! == 0{
+            clockInHour.text = "12"
+            clockInPrefix.text = "AM"
+        }else if Int(clockInHour.text!)! == 12{
+            clockInPrefix.text = "PM"
+        }
+        clockInMinutes.text = String(allComponentsIn.minute!)
+        if clockInMinutes.text!.count == 1 {
+            clockInMinutes.text = "0" + clockInMinutes.text!
+        }
+        let allComponentsOut = calendar.dateComponents([.month, .day, .year, .hour, .minute], from: empspay[row].clockOut!)
+        clockOutMonth.text = String(allComponentsOut.month!)
+        if clockOutMonth.text!.count == 1 {
+            clockOutMonth.text = "0" + clockOutMonth.text!
+        }
+        clockOutDay.text = String(allComponentsOut.day!)
+        if clockOutDay.text!.count == 1 {
+            clockOutDay.text = "0" + clockOutDay.text!
+        }
+        clockOutYear.text = String(allComponentsOut.year!)
+        clockOutHour.text = String(allComponentsOut.hour!)
+        if Int(clockOutHour.text!)! > 12{
+            clockOutHour.text = String(Int(clockOutHour.text!)! - 12)
+            clockOutPrefix.text = "PM"
+        }else{
+            clockOutPrefix.text = "AM"
+        }
+        if Int(clockOutHour.text!)! == 0{
+            clockOutHour.text = "12"
+            clockOutPrefix.text = "AM"
+        }else if Int(clockOutHour.text!)! == 12{
+            clockOutPrefix.text = "PM"
+        }
+        clockOutMinutes.text = String(allComponentsOut.minute!)
+        if clockOutMinutes.text!.count == 1 {
+            clockOutMinutes.text = "0" + clockOutMinutes.text!
+        }
+        dailyHours.text =  String((empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!))/3600)
+    }
     
     
 }

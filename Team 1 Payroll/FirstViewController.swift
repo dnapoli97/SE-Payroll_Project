@@ -26,6 +26,14 @@ class FirstViewController: UIViewController {
         }
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -102,6 +110,7 @@ class FirstViewController: UIViewController {
         if checkLogin{
             username.text = nil
             password.text = nil
+            invalidLogin.isHidden = true
             if currentLogin.ismanager{
                 self.performSegue(withIdentifier: "toOverview", sender: self)
             }else{
