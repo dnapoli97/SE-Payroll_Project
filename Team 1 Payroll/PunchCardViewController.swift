@@ -11,7 +11,7 @@ import UIKit
 class PunchCardViewController: UIViewController {
 
     var currentLogin: Employee!
-    
+    var firstLaunch: FirstLaunch!
     
     override func viewDidLoad() {
         super.viewDidLoad()

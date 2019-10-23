@@ -14,15 +14,19 @@ class FirstViewController: UIViewController {
     
     var managedObjectContext: NSManagedObjectContext!
     var currentLogin: Employee!
+    var defaultDate: Date!
+    var firstLaunch: FirstLaunch!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toOverview" {
             let nextViewController = segue.destination as! OverviewViewController
             nextViewController.currentLogin = currentLogin
-               }
+            nextViewController.firstLaunch = firstLaunch
+        }
         if segue.identifier == "toPersonal" {
             let nextViewController = segue.destination as! personalViewController
             nextViewController.currentLogin = currentLogin
+            nextViewController.firstLaunch = firstLaunch
         }
     }
     
@@ -43,68 +47,64 @@ class FirstViewController: UIViewController {
             fatalError("This view needs a persistent container.")
         }
         
-        let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
-        do{
-            let results = try managedObjectContext.fetch(fetchRequest)
-            var adminInDb = false
-            for result in results{
-                if "admin" == result.username{
-                    adminInDb = true
-                }
+        
+        firstLaunch = FirstLaunch(userDefaults: .standard, key: "com.any-suggestion.FirstLaunch.WasLaunchedBefore")
+        
+        if firstLaunch.isFirstLaunch {
+            guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee", in: managedObjectContext) else {
+                        return
             }
-            if !adminInDb {
-                guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee", in: managedObjectContext) else {
+            guard let entityDescriptionInfo = NSEntityDescription.entity(forEntityName: "Employee_Info", in: managedObjectContext) else {
                     return
-                }
-                guard let entityDescriptionInfo = NSEntityDescription.entity(forEntityName: "Employee_Info", in: managedObjectContext) else {
-                                   return
-                               }
-                    let newValueInfo = Employee_Info(entity: entityDescriptionInfo, insertInto: managedObjectContext)
-                
-                    guard let entityDescriptionSchedule = NSEntityDescription.entity(forEntityName: "Schedule", in: managedObjectContext) else {
-                                   return
-                               }
-                    let newValueSchedule = Schedule(entity: entityDescriptionSchedule, insertInto: managedObjectContext)
-                
-                    guard let entityDescriptionPay =   NSEntityDescription.entity(forEntityName: "Pay", in: managedObjectContext) else {
-                                   return
-                               }
-                    let newValuePay = Pay(entity: entityDescriptionPay, insertInto: managedObjectContext)
-                
-                let newValue = Employee(entity: entityDescription, insertInto: managedObjectContext)
-                
-                newValue.setValue("admin", forKey: "username")
-                newValue.setValue("admin", forKey: "password")
-                newValue.setValue(0, forKey: "id")
-                newValue.setValue(true, forKey: "ismanager")
-                newValueInfo.setValue("admin", forKey: "firstName")
-                newValueInfo.setValue("admin", forKey: "lastName")
-                newValueInfo.setValue("123 admin st", forKey: "homeAddress")
-                newValuePay.setValue(10.00, forKey: "wage")
-                newValue.setValue(newValueInfo, forKey: "info")
-                newValue.setValue(newValueSchedule, forKey: "schedule")
-                newValue.setValue(newValuePay, forKey: "pay")
-                
-                do{
-                    try managedObjectContext.save()
-                }catch{
-                    print("Saving Error")
-                }
+                    }
+            let newValueInfo = Employee_Info(entity: entityDescriptionInfo, insertInto: managedObjectContext)
+            
+            guard let entityDescriptionSchedule = NSEntityDescription.entity(forEntityName: "Schedule", in: managedObjectContext) else {
+                return
             }
-        }catch{
-            print(error)
+            let newValueSchedule = Schedule(entity: entityDescriptionSchedule, insertInto: managedObjectContext)
+                    
+            guard let entityDescriptionPay =   NSEntityDescription.entity(forEntityName: "Pay", in: managedObjectContext) else {
+                return
+            }
+            let newValuePay = Pay(entity: entityDescriptionPay, insertInto: managedObjectContext)
+                    
+            let newValue = Employee(entity: entityDescription, insertInto: managedObjectContext)
+                    
+            newValue.setValue("admin", forKey: "username")
+            newValue.setValue("admin", forKey: "password")
+            newValue.setValue(0, forKey: "id")
+            newValue.setValue(true, forKey: "ismanager")
+            newValueInfo.setValue("admin", forKey: "firstName")
+            newValueInfo.setValue("admin", forKey: "lastName")
+            newValueInfo.setValue("123 admin st", forKey: "homeAddress")
+            newValuePay.setValue(10.00, forKey: "wage")
+            newValue.setValue(newValueInfo, forKey: "info")
+            newValue.setValue(newValueSchedule, forKey: "schedule")
+            newValue.setValue(newValuePay, forKey: "pay")
+            do{
+                try managedObjectContext.save()
+            }catch{
+                print("Saving Error")
+            }
+            
+            let calendar = Calendar.current
+            let defaultcomps = DateComponents(calendar: calendar, year: 2000, month: 1, day: 1, hour: 0, minute: 1)
+            defaultDate = calendar.date(from: defaultcomps)
+            
+            let userdefault = firstLaunch.getUserDefault
+            
+            userdefault.setValue(defaultDate, forKey: "defaultDate")
+            
         }
+        
     }
     
     @IBOutlet weak var loginbutton: UIButton!
     @IBOutlet weak var tabBar: UITabBarItem!
-    
     @IBOutlet weak var password: UITextField!
-    
     @IBOutlet weak var username: UITextField!
-    
     @IBOutlet weak var invalidLogin: UILabel!
-    
     @IBAction func loginPressed(_ sender: Any) {
         
         if checkLogin{

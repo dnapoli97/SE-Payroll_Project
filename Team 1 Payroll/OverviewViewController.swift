@@ -19,12 +19,15 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     var empsInfo:[Employee_Info]!
     var empssch:[Schedule]!
     var empspay:[Pay]!
+    var firstLaunch: FirstLaunch!
+    var defaultDate: Date!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "personal" {
             let nextViewController = segue.destination as! personalViewController
             nextViewController.currentLogin = currentLogin
             nextViewController.managedObjectContext = managedObjectContext
+            nextViewController.firstLaunch = firstLaunch
         }
     }
     
@@ -46,6 +49,9 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         guard managedObjectContext != nil else {
             fatalError("This view needs a persistent container.")
         }
+        
+        let user = firstLaunch.getUserDefault
+        defaultDate = user.object(forKey: "defaultDate") as? Date
         
         ScheduleView.isHidden = false
         WorkTimes.isHidden = true
@@ -612,7 +618,6 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         clockOutHour.isUserInteractionEnabled = true
         clockOutMinutes.isUserInteractionEnabled = true
         clockOutPrefix.isUserInteractionEnabled = true
-        dailyHours.isUserInteractionEnabled = true
         timeSaveButton.isHidden = false
     }
     
@@ -664,7 +669,6 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             clockOutHour.isUserInteractionEnabled = false
             clockOutMinutes.isUserInteractionEnabled = false
             clockOutPrefix.isUserInteractionEnabled = false
-            dailyHours.isUserInteractionEnabled = false
             timeSaveButton.isHidden = true
             
         }catch{
@@ -674,61 +678,87 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     func displayTimeStub(row: Int){
-        let allComponentsIn = calendar.dateComponents([.month, .day, .year, .hour, .minute], from: empspay[row].clockIn!)
-        clockInMonth.text = String(allComponentsIn.month!)
-        if clockInMonth.text!.count == 1 {
-            clockInMonth.text = "0" + clockInMonth.text!
-        }
-        clockInDay.text = String(allComponentsIn.day!)
-        if clockInDay.text!.count == 1 {
-            clockInDay.text = "0" + clockInDay.text!
-        }
-        clockInYear.text = String(allComponentsIn.year!)
-        clockInHour.text = String(allComponentsIn.hour!)
-        if Int(clockInHour.text!)! > 12{
-            clockInHour.text = String(Int(clockInHour.text!)! - 12)
-            clockInPrefix.text = "PM"
+        if empspay[row].clockIn != defaultDate{
+            let allComponentsIn = calendar.dateComponents([.month, .day, .year, .hour, .minute], from: empspay[row].clockIn!)
+            clockInMonth.text = String(allComponentsIn.month!)
+            if clockInMonth.text!.count == 1 {
+                clockInMonth.text = "0" + clockInMonth.text!
+            }
+            clockInDay.text = String(allComponentsIn.day!)
+            if clockInDay.text!.count == 1 {
+                clockInDay.text = "0" + clockInDay.text!
+            }
+            clockInYear.text = String(allComponentsIn.year!)
+            clockInHour.text = String(allComponentsIn.hour!)
+            if Int(clockInHour.text!)! > 12{
+                clockInHour.text = String(Int(clockInHour.text!)! - 12)
+                clockInPrefix.text = "PM"
+            }else{
+                clockOutPrefix.text = "AM"
+            }
+            if Int(clockInHour.text!)! == 0{
+                clockInHour.text = "12"
+                clockInPrefix.text = "AM"
+            }else if Int(clockInHour.text!)! == 12{
+                clockInPrefix.text = "PM"
+            }
+            clockInMinutes.text = String(allComponentsIn.minute!)
+            if clockInMinutes.text!.count == 1 {
+                clockInMinutes.text = "0" + clockInMinutes.text!
+            }
+            if empspay[row].clockOut != defaultDate{
+                let allComponentsOut = calendar.dateComponents([.month, .day, .year, .hour, .minute], from: empspay[row].clockOut!)
+                clockOutMonth.text = String(allComponentsOut.month!)
+                if clockOutMonth.text!.count == 1 {
+                    clockOutMonth.text = "0" + clockOutMonth.text!
+                }
+                clockOutDay.text = String(allComponentsOut.day!)
+                if clockOutDay.text!.count == 1 {
+                    clockOutDay.text = "0" + clockOutDay.text!
+                }
+                clockOutYear.text = String(allComponentsOut.year!)
+                clockOutHour.text = String(allComponentsOut.hour!)
+                if Int(clockOutHour.text!)! > 12{
+                    clockOutHour.text = String(Int(clockOutHour.text!)! - 12)
+                    clockOutPrefix.text = "PM"
+                }else{
+                    clockOutPrefix.text = "AM"
+                }
+                if Int(clockOutHour.text!)! == 0{
+                    clockOutHour.text = "12"
+                    clockOutPrefix.text = "AM"
+                }else if Int(clockOutHour.text!)! == 12{
+                    clockOutPrefix.text = "PM"
+                }
+                clockOutMinutes.text = String(allComponentsOut.minute!)
+                if clockOutMinutes.text!.count == 1 {
+                    clockOutMinutes.text = "0" + clockOutMinutes.text!
+                }
+                dailyHours.text =  String((empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!))/3600)
+            }else{
+                clockOutMonth.text = "-"
+                clockOutDay.text = "-"
+                clockOutYear.text = "-"
+                clockOutHour.text = "-"
+                clockOutMinutes.text = "-"
+                clockOutPrefix.text = "-"
+            }
         }else{
-            clockOutPrefix.text = "AM"
+            clockInMonth.text = "-"
+            clockInDay.text = "-"
+            clockInYear.text = "-"
+            clockInHour.text = "-"
+            clockInMinutes.text = "-"
+            clockInPrefix.text = "-"
+            clockOutMonth.text = "-"
+            clockOutDay.text = "-"
+            clockOutYear.text = "-"
+            clockOutHour.text = "-"
+            clockOutMinutes.text = "-"
+            clockOutPrefix.text = "-"
         }
-        if Int(clockInHour.text!)! == 0{
-            clockInHour.text = "12"
-            clockInPrefix.text = "AM"
-        }else if Int(clockInHour.text!)! == 12{
-            clockInPrefix.text = "PM"
-        }
-        clockInMinutes.text = String(allComponentsIn.minute!)
-        if clockInMinutes.text!.count == 1 {
-            clockInMinutes.text = "0" + clockInMinutes.text!
-        }
-        let allComponentsOut = calendar.dateComponents([.month, .day, .year, .hour, .minute], from: empspay[row].clockOut!)
-        clockOutMonth.text = String(allComponentsOut.month!)
-        if clockOutMonth.text!.count == 1 {
-            clockOutMonth.text = "0" + clockOutMonth.text!
-        }
-        clockOutDay.text = String(allComponentsOut.day!)
-        if clockOutDay.text!.count == 1 {
-            clockOutDay.text = "0" + clockOutDay.text!
-        }
-        clockOutYear.text = String(allComponentsOut.year!)
-        clockOutHour.text = String(allComponentsOut.hour!)
-        if Int(clockOutHour.text!)! > 12{
-            clockOutHour.text = String(Int(clockOutHour.text!)! - 12)
-            clockOutPrefix.text = "PM"
-        }else{
-            clockOutPrefix.text = "AM"
-        }
-        if Int(clockOutHour.text!)! == 0{
-            clockOutHour.text = "12"
-            clockOutPrefix.text = "AM"
-        }else if Int(clockOutHour.text!)! == 12{
-            clockOutPrefix.text = "PM"
-        }
-        clockOutMinutes.text = String(allComponentsOut.minute!)
-        if clockOutMinutes.text!.count == 1 {
-            clockOutMinutes.text = "0" + clockOutMinutes.text!
-        }
-        dailyHours.text =  String((empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!))/3600)
+        
+        
     }
     
     

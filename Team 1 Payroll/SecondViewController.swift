@@ -13,6 +13,7 @@ class SecondViewController: UIViewController {
 
     var managedObjectContext: NSManagedObjectContext!
     var currentLogin: Employee!
+    var firstLaunch: FirstLaunch!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "punchIn" {

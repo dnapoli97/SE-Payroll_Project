@@ -16,6 +16,7 @@ class personalViewController: UIViewController {
     var empInfo: Employee_Info!
     var empSchedule: Schedule!
     var empPay: Pay!
+    var firstLaunch: FirstLaunch!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "manager" {
