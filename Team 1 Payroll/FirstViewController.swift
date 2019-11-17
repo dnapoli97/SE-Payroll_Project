@@ -17,6 +17,8 @@ class FirstViewController: UIViewController {
     var defaultDate: Date!
     var firstLaunch: FirstLaunch!
     
+    // assigns values to the next view controller so the same instance of the variables are accessed
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toOverview" {
             let nextViewController = segue.destination as! OverviewViewController
@@ -30,6 +32,8 @@ class FirstViewController: UIViewController {
         }
     }
     
+    // closes the keyboard that opens when typing in a text box by touching anywhere on the screen outside of the keyboard
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
     }
@@ -37,6 +41,8 @@ class FirstViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,8 +53,11 @@ class FirstViewController: UIViewController {
             fatalError("This view needs a persistent container.")
         }
         
+        // first launch is a final class that is connected to user default so that it only runs on first launch and the varaibles are not manipulated again
         
         firstLaunch = FirstLaunch(userDefaults: .standard, key: "com.any-suggestion.FirstLaunch.WasLaunchedBefore")
+        
+        // if it is the first launch then Admin is created in the DB and a default date is set based off the default date assigned to admin
         
         if firstLaunch.isFirstLaunch {
             guard let entityDescription = NSEntityDescription.entity(forEntityName: "Employee", in: managedObjectContext) else {
@@ -105,6 +114,9 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var invalidLogin: UILabel!
+    
+    // func accessed by pressing the login button that calls checkLogin to check the DB for the username and matching password
+    
     @IBAction func loginPressed(_ sender: Any) {
         
         if checkLogin{
@@ -123,6 +135,8 @@ class FirstViewController: UIViewController {
     
 }
 
+// utility save func *currrently not used
+
 extension FirstViewController{
     func save(value: String, key: String){
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
@@ -136,12 +150,13 @@ extension FirstViewController{
             newValue.setValue(value, forKey: key)
             do{
                 try context.save()
-                print("Saved: true")
             }catch{
                 print("Saving Error")
             }
         }
     }
+    
+    // utility retrieve value func used for testing * currently not used
     
     func retrieveValue(){
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
@@ -160,6 +175,8 @@ extension FirstViewController{
             }
         }
     }
+    
+    
     
     var checkLogin: Bool {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate{

@@ -69,8 +69,8 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         
         pickerSchedule.dataSource = self
         pickerSchedule.delegate = self
-        timesPickerView.dataSource = self
-        timesPickerView.delegate = self
+        pickerSchedule.dataSource = self
+        pickerSchedule.delegate = self
         
         empNames = []
         empsInfo = []
@@ -99,7 +99,6 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             Wages.isHidden = true
             newEmployee.isHidden = true
             pickerSchedule.reloadAllComponents()
-            pickerSchedule.selectRow(timesPickerView.selectedRow(inComponent: 0), inComponent: 0, animated: false)
             break
         case 1:
             ScheduleView.isHidden = true
@@ -120,8 +119,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             clockOutMinutes.isUserInteractionEnabled = false
             clockOutPrefix.isUserInteractionEnabled = false
             dailyHours.isUserInteractionEnabled = false
-            timesPickerView.reloadAllComponents()
-            timesPickerView.selectRow(pickerSchedule.selectedRow(inComponent: 0), inComponent: 0, animated: false)
+            pickerSchedule.reloadAllComponents()
             break
         case 2:
             ScheduleView.isHidden = true
@@ -129,6 +127,8 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             ApprovePay.isHidden = false
             Wages.isHidden = true
             newEmployee.isHidden = true
+            pickerSchedule.isHidden = false
+            pickerSchedule.reloadAllComponents()
             break
         case 3:
             ScheduleView.isHidden = true
@@ -136,6 +136,11 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             ApprovePay.isHidden = true
             Wages.isHidden = false
             newEmployee.isHidden = true
+            pickerSchedule.isHidden = false
+            pickerSchedule.reloadAllComponents()
+            wageText.isUserInteractionEnabled = false
+            saveWageButton.isHidden = true
+            EditWageButton.isHidden = false
             break
         case 4:
             ScheduleView.isHidden = true
@@ -143,13 +148,16 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             ApprovePay.isHidden = true
             Wages.isHidden = true
             newEmployee.isHidden = false
+            pickerSchedule.isHidden = true
             break
         default:
             ScheduleView.isHidden = false
             WorkTimes.isHidden = true
             ApprovePay.isHidden = true
             Wages.isHidden = true
+            pickerSchedule.isHidden = false
             newEmployee.isHidden = true
+            pickerSchedule.reloadAllComponents()
             break
         }
     }
@@ -164,7 +172,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     // Used to unwind from personal view
     @IBAction func returnToMan(_ unwindSegue: UIStoryboardSegue) {}
     
-    // MARK: - Adding new Employee
+    // MARK: - New Hire
     
     @IBOutlet weak var newFname: UITextField!
     @IBOutlet weak var newLname: UITextField!
@@ -254,7 +262,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         }
     }
     
-    // MARK: - Edit Schedule
+    // MARK: - Schedule
     
     @IBOutlet weak var weekSelect: UISegmentedControl!
     @IBOutlet weak var pickerSchedule: UIPickerView!
@@ -289,77 +297,29 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var followingEdit: UIButton!
     @IBOutlet weak var followingSave: UIButton!
     
-    // MARK: - Picker funcs
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-            1
-        }
-        
-        func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-            empNames = []
-            empsInfo = []
-            emps = []
-            empssch = []
-            empspay = []
-            empsUsername = []
-             let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-                do{
-                    let results = try managedObjectContext.fetch(fetchRequest)
-                    for result in results{
-                        empsUsername.append(result.username!)
-                        if let empinfo = result.info{
-                            if let first = empinfo.firstName{
-                                if let last = empinfo.lastName{
-                                    let name = last + ", " + first
-                                    empNames.append(name)
-                                    if let empsch = result.schedule{
-                                        empssch.append(empsch)
-                                    }
-                                    if let emppay = result.pay{
-                                        empspay.append(emppay)
-                                    }
-                                    empsInfo.append(empinfo)
-                                    emps.append(result)
-                                }
-                            }
-                        }
-                    }
-                    return results.count
-                }catch{
-                    print(Error.self)
-            }
-        return 0
+    func displaySchedule(row: Int){
+        currentMonday.text = empssch[row].day0
+        currentTuesday.text = empssch[row].day1
+        currentWednesday.text = empssch[row].day2
+        currentThursday.text = empssch[row].day3
+        currentFriday.text = empssch[row].day4
+        currentSaturday.text = empssch[row].day5
+        currentSunday.text = empssch[row].day6
+        nextMonday.text = empssch[row].day7
+        nextTuesday.text = empssch[row].day8
+        nextWednesday.text = empssch[row].day9
+        nextThursday.text = empssch[row].day10
+        nextFriday.text = empssch[row].day11
+        nextSaturday.text = empssch[row].day12
+        nextSunday.text = empssch[row].day13
+        followingMonday.text = empssch[row].day14
+        followingTuesday.text = empssch[row].day15
+        followingWednesday.text = empssch[row].day16
+        followingThursday.text = empssch[row].day17
+        followingFriday.text = empssch[row].day18
+        followingSaturday.text = empssch[row].day19
+        followingSunday.text = empssch[row].day20
     }
-        func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-            return empNames[row]
-        }
-        func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-            currentMonday.text = empssch[row].day0
-            currentTuesday.text = empssch[row].day1
-            currentWednesday.text = empssch[row].day2
-            currentThursday.text = empssch[row].day3
-            currentFriday.text = empssch[row].day4
-            currentSaturday.text = empssch[row].day5
-            currentSunday.text = empssch[row].day6
-            nextMonday.text = empssch[row].day7
-            nextTuesday.text = empssch[row].day8
-            nextWednesday.text = empssch[row].day9
-            nextThursday.text = empssch[row].day10
-            nextFriday.text = empssch[row].day11
-            nextSaturday.text = empssch[row].day12
-            nextSunday.text = empssch[row].day13
-            followingMonday.text = empssch[row].day14
-            followingTuesday.text = empssch[row].day15
-            followingWednesday.text = empssch[row].day16
-            followingThursday.text = empssch[row].day17
-            followingFriday.text = empssch[row].day18
-            followingSaturday.text = empssch[row].day19
-            followingSunday.text = empssch[row].day20
-            displayTimeStub(row: row)
-            weekChange(pickerView.self)
-            
-        }
     
     @IBAction func weekChange(_ sender: Any) {
         switch weekSelect.selectedSegmentIndex {
@@ -584,9 +544,8 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     
-    // MARK: - Work Times
+    // MARK: - Edit Punches
     
-    @IBOutlet weak var timesPickerView: UIPickerView!
     @IBOutlet weak var clockInMonth: UITextField!
     @IBOutlet weak var clockInDay: UITextField!
     @IBOutlet weak var clockInYear: UITextField!
@@ -619,10 +578,11 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         clockOutMinutes.isUserInteractionEnabled = true
         clockOutPrefix.isUserInteractionEnabled = true
         timeSaveButton.isHidden = false
+        timeEditButton.isHidden = true
     }
     
     @IBAction func timeSavePressed(_ sender: Any) {
-        let selectedemp = empspay[timesPickerView.selectedRow(inComponent: 0)]
+        let selectedemp = empspay[pickerSchedule.selectedRow(inComponent: 0)]
         
         do{
             let newClockInPrefix = clockInPrefix.text!.uppercased()
@@ -656,7 +616,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             selectedemp.setValue(newClockInDate, forKey: "clockIn")
             selectedemp.setValue(newClockOutDate, forKey: "clockOut")
             try managedObjectContext.save()
-            displayTimeStub(row:timesPickerView.selectedRow(inComponent: 0))
+            displayTimeStub(row:pickerSchedule.selectedRow(inComponent: 0))
             clockInMonth.isUserInteractionEnabled = false
             clockInDay.isUserInteractionEnabled = false
             clockInYear.isUserInteractionEnabled = false
@@ -670,7 +630,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             clockOutMinutes.isUserInteractionEnabled = false
             clockOutPrefix.isUserInteractionEnabled = false
             timeSaveButton.isHidden = true
-            
+            timeEditButton.isHidden = false
         }catch{
             print(error)
         }
@@ -694,7 +654,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 clockInHour.text = String(Int(clockInHour.text!)! - 12)
                 clockInPrefix.text = "PM"
             }else{
-                clockOutPrefix.text = "AM"
+                clockInPrefix.text = "AM"
             }
             if Int(clockInHour.text!)! == 0{
                 clockInHour.text = "12"
@@ -734,7 +694,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 if clockOutMinutes.text!.count == 1 {
                     clockOutMinutes.text = "0" + clockOutMinutes.text!
                 }
-                dailyHours.text =  String((empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!))/3600)
+                dailyHours.text = stringFromTimeInterval(time: (empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!)))
             }else{
                 clockOutMonth.text = "-"
                 clockOutDay.text = "-"
@@ -742,6 +702,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 clockOutHour.text = "-"
                 clockOutMinutes.text = "-"
                 clockOutPrefix.text = "-"
+                dailyHours.text = ""
             }
         }else{
             clockInMonth.text = "-"
@@ -756,10 +717,130 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             clockOutHour.text = "-"
             clockOutMinutes.text = "-"
             clockOutPrefix.text = "-"
+            dailyHours.text = ""
         }
         
         
     }
     
+    func stringFromTimeInterval(time: Double) -> String{
+
+        let time = NSInteger(time)
+        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+
+        return String(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds)
+
+    }
+    
+    // MARK: - Wages
+    
+    @IBOutlet weak var wageText: UITextField!
+    @IBOutlet weak var saveWageButton: UIButton!
+    @IBOutlet weak var EditWageButton: UIButton!
+    
+    @IBAction func wageEditPress(_ sender: Any) {
+        wageText.isUserInteractionEnabled = true
+        EditWageButton.isHidden = true
+        saveWageButton.isHidden = false
+    }
+    @IBAction func wageSavePress(_ sender: Any) {
+        let selectedemp = empspay[pickerSchedule.selectedRow(inComponent: 0)]
+        do{
+            let newWage = Float(wageText.text!)
+            selectedemp.setValue(newWage, forKey: "wage")
+            try managedObjectContext.save()
+            wageText.isUserInteractionEnabled = false
+            saveWageButton.isHidden = true
+            EditWageButton.isHidden = false
+        }catch{
+            print(error)
+        }
+    }
+    
+    // MARK: - Finalizing Pay
+    
+    func calcIncomeTax(grossPay: Float) -> Float{
+        var tax: Float
+        if grossPay < 254 {
+            tax = grossPay - 71
+            tax = tax * 0.1
+        }else if grossPay < 815 {
+            tax = grossPay - 101.5
+            tax = tax * 0.12
+        }else if grossPay < 1658 {
+            tax = grossPay - 425.82
+            tax = tax * 0.22
+        }else if grossPay < 3100 {
+            tax = grossPay - 528.50
+            tax = tax * 0.24
+        }else if grossPay < 3917 {
+            tax = grossPay - 1171.38
+            tax = tax * 0.32
+        }else if grossPay < 9687{
+            tax = grossPay - 1406.71
+            tax = tax * 0.35
+        }else {
+            tax = grossPay - 1854.30
+            tax = tax * 0.37
+        }
+        return tax
+    }
+    
+    
+    
+    // MARK: - Picker funcs
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+            1
+        }
+        
+        func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+            empNames = []
+            empsInfo = []
+            emps = []
+            empssch = []
+            empspay = []
+            empsUsername = []
+             let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+                do{
+                    let results = try managedObjectContext.fetch(fetchRequest)
+                    for result in results{
+                        empsUsername.append(result.username!)
+                        if let empinfo = result.info{
+                            if let first = empinfo.firstName{
+                                if let last = empinfo.lastName{
+                                    let name = last + ", " + first
+                                    empNames.append(name)
+                                    if let empsch = result.schedule{
+                                        empssch.append(empsch)
+                                    }
+                                    if let emppay = result.pay{
+                                        empspay.append(emppay)
+                                    }
+                                    empsInfo.append(empinfo)
+                                    emps.append(result)
+                                }
+                            }
+                        }
+                    }
+                    return results.count
+                }catch{
+                    print(Error.self)
+            }
+        return 0
+    }
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return empNames[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        displaySchedule(row: row)
+        displayTimeStub(row: row)
+        wageText.text = String(empspay[row].wage)
+        weekChange(pickerView.self)
+    }
     
 }

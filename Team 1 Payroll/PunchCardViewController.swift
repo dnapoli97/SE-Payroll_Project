@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 class PunchCardViewController: UIViewController {
 
     var currentLogin: Employee!
     var firstLaunch: FirstLaunch!
+    var managedObjectContext: NSManagedObjectContext!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +21,27 @@ class PunchCardViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
+    @IBOutlet weak var clockInButton: UIButton!
+    @IBOutlet weak var clockOutButton: UIButton!
+    
+    @IBAction func clockInPressed(_ sender: Any) {
+        currentLogin.pay!.clockIn = Date.init()
+        do{
+            try managedObjectContext.save()
+        }catch{
+            print(error)
+        }
+    }
+    
+    @IBAction func clockOutPressed(_ sender: Any) {
+        currentLogin.pay!.clockOut = Date.init()
+        do{
+            try managedObjectContext.save()
+        }catch{
+            print(error)
+        }
+    }
+    
     /*
     // MARK: - Navigation
 

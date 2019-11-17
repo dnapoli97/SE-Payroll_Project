@@ -19,6 +19,7 @@ class SecondViewController: UIViewController {
     if segue.identifier == "punchIn" {
         let nextViewController = segue.destination as! PunchCardViewController
         nextViewController.currentLogin = currentLogin
+        nextViewController.managedObjectContext = managedObjectContext
            }
     }
     
@@ -50,6 +51,8 @@ class SecondViewController: UIViewController {
         
         if checkLogin{
             invalidLogin.isHidden = true
+            username.text = ""
+            password.text = ""
             self.performSegue(withIdentifier: "punchIn", sender: self)
         }
         
