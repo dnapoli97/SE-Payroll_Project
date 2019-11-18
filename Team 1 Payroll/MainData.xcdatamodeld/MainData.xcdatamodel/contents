@@ -13,13 +13,14 @@
         <attribute name="firstName" attributeType="String"/>
         <attribute name="homeAddress" attributeType="String"/>
         <attribute name="lastName" attributeType="String"/>
+        <attribute name="married" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="phoneNumber" optional="YES" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="info" inverseEntity="Employee"/>
     </entity>
     <entity name="Pay" representedClassName="Pay" syncable="YES" codeGenerationType="class">
         <attribute name="clockIn" attributeType="Date" defaultDateTimeInterval="-31604340" usesScalarValueType="NO"/>
         <attribute name="clockOut" attributeType="Date" defaultDateTimeInterval="-31604340" usesScalarValueType="NO"/>
-        <attribute name="time" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="time" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="wage" attributeType="Float" defaultValueString="7.25" usesScalarValueType="YES"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="pay" inverseEntity="Employee"/>
         <relationship name="schedule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Schedule" inverseName="pay" inverseEntity="Schedule"/>
@@ -51,7 +52,7 @@
     </entity>
     <elements>
         <element name="Employee" positionX="99.1015625" positionY="28.36328125" width="128" height="148"/>
-        <element name="Employee_Info" positionX="-117.6171875" positionY="1.3515625" width="128" height="118"/>
+        <element name="Employee_Info" positionX="-117.6171875" positionY="1.3515625" width="128" height="133"/>
         <element name="Pay" positionX="0.10546875" positionY="359.25" width="128" height="133"/>
         <element name="Schedule" positionX="294.8125" positionY="33.60546875" width="128" height="388"/>
     </elements>

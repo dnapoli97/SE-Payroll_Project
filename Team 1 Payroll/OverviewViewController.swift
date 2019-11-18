@@ -67,11 +67,6 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         followingWeek.isHidden = true
         timeSaveButton.isHidden = true
         
-        pickerSchedule.dataSource = self
-        pickerSchedule.delegate = self
-        pickerSchedule.dataSource = self
-        pickerSchedule.delegate = self
-        
         empNames = []
         empsInfo = []
         emps = []
@@ -79,6 +74,13 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         empspay = []
         empsUsername = []
         
+        pickerSchedule.dataSource = self
+        pickerSchedule.delegate = self
+        pickerSchedule.selectRow(0, inComponent: 0, animated: false)
+        displaySchedule(row: 0)
+        displayTimeStub(row: 0)
+        displayPayStub(row: 0)
+        displayWage(row: 0)
     }
     
     @IBOutlet weak var newEmployee: UIView!
@@ -99,6 +101,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             Wages.isHidden = true
             newEmployee.isHidden = true
             pickerSchedule.reloadAllComponents()
+            pickerSchedule.isHidden = false
             break
         case 1:
             ScheduleView.isHidden = true
@@ -120,6 +123,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             clockOutPrefix.isUserInteractionEnabled = false
             dailyHours.isUserInteractionEnabled = false
             pickerSchedule.reloadAllComponents()
+            pickerSchedule.isHidden = false
             break
         case 2:
             ScheduleView.isHidden = true
@@ -129,6 +133,19 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             newEmployee.isHidden = true
             pickerSchedule.isHidden = false
             pickerSchedule.reloadAllComponents()
+            rHours.isUserInteractionEnabled = false
+            rRate.isUserInteractionEnabled = false
+            rPay.isUserInteractionEnabled = false
+            oHours.isUserInteractionEnabled = false
+            oRate.isUserInteractionEnabled = false
+            oPay.isUserInteractionEnabled = false
+            tHours.isUserInteractionEnabled = false
+            tPay.isUserInteractionEnabled = false
+            fedTax.isUserInteractionEnabled = false
+            stateTax.isUserInteractionEnabled = false
+            medicareTax.isUserInteractionEnabled = false
+            socialSecurityTax.isUserInteractionEnabled = false
+            gPay.isUserInteractionEnabled = false
             break
         case 3:
             ScheduleView.isHidden = true
@@ -140,7 +157,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             pickerSchedule.reloadAllComponents()
             wageText.isUserInteractionEnabled = false
             saveWageButton.isHidden = true
-            EditWageButton.isHidden = false
+            editWageButton.isHidden = false
             break
         case 4:
             ScheduleView.isHidden = true
@@ -185,6 +202,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var newWage: UITextField!
     @IBOutlet weak var passwordDontMatch: UILabel!
     @IBOutlet weak var usernameTaken: UILabel!
+    @IBOutlet weak var isMarried: UISwitch!
     
     
     @IBAction func confirmNewEmployee(_ sender: Any) {
@@ -230,10 +248,10 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 newValueInfo.setValue(newFname.text, forKey: "firstName")
                 newValueInfo.setValue(newLname.text, forKey: "lastName")
                 newValueInfo.setValue(newAddress.text, forKey: "homeAddress")
+                newValueInfo.setValue(isMarried.isOn, forKey: "married")
                 if newPhone.text != "" {
                     newValueInfo.setValue(Int64(newPhone.text!), forKey: "phoneNumber")
                 }
-            
                 newValuePay.setValue(Float(newWage.text!), forKey: "wage")
                 newValueEmp.setValue(newValueInfo, forKey: "info")
                 newValueEmp.setValue(newValueSchedule, forKey: "schedule")
@@ -253,6 +271,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
                 newPhone.text = ""
                 newAddress.text = ""
                 newManager.setOn(false, animated: false)
+                isMarried.setOn(false, animated: false)
                 newWage.text = ""
                 passwordDontMatch.isHidden = true
                 usernameTaken.isHidden = true
@@ -631,11 +650,32 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             clockOutPrefix.isUserInteractionEnabled = false
             timeSaveButton.isHidden = true
             timeEditButton.isHidden = false
+            pickerSchedule.reloadAllComponents()
+            displayTimeStub(row: pickerSchedule.selectedRow(inComponent: 0))
         }catch{
             print(error)
         }
     
     }
+    
+    @IBAction func finalizeDayPay(_ sender: Any) {
+        do{
+            let row = pickerSchedule.selectedRow(inComponent: 0)
+            let time = (empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!))
+            empspay[row].setValue(empspay[row].time + time, forKey: "time")
+            try managedObjectContext.save()
+            empspay[row].setValue(defaultDate, forKey: "clockIn")
+            empspay[row].setValue(defaultDate, forKey: "clockOut")
+            try managedObjectContext.save()
+            pickerSchedule.reloadAllComponents()
+            displayTimeStub(row: row)
+            displayWage(row: row)
+            displayPayStub(row: row)
+        } catch {
+            print(error)
+        }
+    }
+        
     
     func displayTimeStub(row: Int){
         if empspay[row].clockIn != defaultDate{
@@ -738,11 +778,11 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     
     @IBOutlet weak var wageText: UITextField!
     @IBOutlet weak var saveWageButton: UIButton!
-    @IBOutlet weak var EditWageButton: UIButton!
+    @IBOutlet weak var editWageButton: UIButton!
     
     @IBAction func wageEditPress(_ sender: Any) {
         wageText.isUserInteractionEnabled = true
-        EditWageButton.isHidden = true
+        editWageButton.isHidden = true
         saveWageButton.isHidden = false
     }
     @IBAction func wageSavePress(_ sender: Any) {
@@ -753,42 +793,147 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             try managedObjectContext.save()
             wageText.isUserInteractionEnabled = false
             saveWageButton.isHidden = true
-            EditWageButton.isHidden = false
+            editWageButton.isHidden = false
         }catch{
             print(error)
         }
     }
     
+    func displayWage(row: Int){
+        wageText.text = String(empspay[row].wage)
+    }
+    
     // MARK: - Finalizing Pay
     
-    func calcIncomeTax(grossPay: Float) -> Float{
+    @IBOutlet weak var rHours: UITextField!
+    @IBOutlet weak var rRate: UITextField!
+    @IBOutlet weak var rPay: UITextField!
+    @IBOutlet weak var oHours: UITextField!
+    @IBOutlet weak var oRate: UITextField!
+    @IBOutlet weak var oPay: UITextField!
+    @IBOutlet weak var tHours: UITextField!
+    @IBOutlet weak var tPay: UITextField!
+    @IBOutlet weak var fedTax: UITextField!
+    @IBOutlet weak var stateTax: UITextField!
+    @IBOutlet weak var medicareTax: UITextField!
+    @IBOutlet weak var socialSecurityTax: UITextField!
+    @IBOutlet weak var gPay: UITextField!
+    
+    func calcFedIncomeTax(grossPay: Float) -> Float{
         var tax: Float
-        if grossPay < 254 {
-            tax = grossPay - 71
-            tax = tax * 0.1
-        }else if grossPay < 815 {
-            tax = grossPay - 101.5
-            tax = tax * 0.12
-        }else if grossPay < 1658 {
-            tax = grossPay - 425.82
-            tax = tax * 0.22
-        }else if grossPay < 3100 {
-            tax = grossPay - 528.50
-            tax = tax * 0.24
-        }else if grossPay < 3917 {
-            tax = grossPay - 1171.38
-            tax = tax * 0.32
-        }else if grossPay < 9687{
-            tax = grossPay - 1406.71
-            tax = tax * 0.35
+        if empsInfo[pickerSchedule.selectedRow(inComponent: 0)].married{
+            if grossPay < 588 {
+                tax = grossPay - 222
+                tax = tax * 0.1
+            }else if grossPay < 1788 {
+                tax = grossPay - 283
+                tax = tax * 0.12
+            }else if grossPay < 3395 {
+                tax = grossPay - 932.09
+                tax = tax * 0.22
+            }else if grossPay < 6280 {
+                tax = grossPay - 1137.33
+                tax = tax * 0.24
+            }else if grossPay < 7914 {
+                tax = grossPay - 2423
+                tax = tax * 0.32
+            }else if grossPay < 11761 {
+                tax = grossPay - 2893.66
+                tax = tax * 0.35
+            }else {
+                tax = grossPay - 3372.97
+                tax = tax * 0.37
+            }
         }else {
-            tax = grossPay - 1854.30
-            tax = tax * 0.37
+            if grossPay < 254 {
+                tax = grossPay - 71
+                tax = tax * 0.1
+            }else if grossPay < 815 {
+                tax = grossPay - 101.5
+                tax = tax * 0.12
+            }else if grossPay < 1658 {
+                tax = grossPay - 425.82
+                tax = tax * 0.22
+            }else if grossPay < 3100 {
+                tax = grossPay - 528.50
+                tax = tax * 0.24
+            }else if grossPay < 3917 {
+                tax = grossPay - 1171.38
+                tax = tax * 0.32
+            }else if grossPay < 9687{
+                tax = grossPay - 1406.71
+                tax = tax * 0.35
+            }else {
+                tax = grossPay - 1854.30
+                tax = tax * 0.37
+            }
+        
+        }
+        if tax > 0{
+            return tax
+        }
+        return 0
+    }
+    
+    func calcSocialTax(grossPay: Float) -> Float{
+        return grossPay * 0.062
+    }
+    
+    func calcMedicareTax(grossPay: Float) -> Float{
+        return grossPay * 0.0145
+    }
+    
+    func calcStateIncomeTax(grossPay: Float) -> Float{
+        var tax: Float
+        if grossPay*52 < 2970 {
+            tax = 0
+        }else if grossPay*52 < 5940 {
+            tax = grossPay * 0.03
+        }else if grossPay*52 < 8910 {
+            tax = grossPay * 0.04
+        }else if grossPay*52 < 11880 {
+            tax = grossPay * 0.05
+        }else if grossPay*52 < 14860 {
+            tax = grossPay * 0.06
+        }else {
+            tax = grossPay * 0.07
         }
         return tax
     }
     
-    
+    func displayPayStub(row: Int){
+        let time = ((empspay[row].time + Double (empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!))) / 3600)
+        let grossPay: Float
+        tHours.text = String(format: "%.2f", time)
+        if time <= 40 {
+            rHours.text = String(format: "%.2f", time)
+            rPay.text = String(format: "%.2f", empspay[row].wage * Float(time))
+            grossPay = empspay[row].wage * Float(time)
+            tPay.text = String(format: "%.2f" , grossPay)
+            oPay.text = ""
+            oHours.text = ""
+            oRate.text = ""
+        }else {
+            rHours.text = "40.00"
+            oHours.text = String(format: "%.2f", time - 40)
+            oRate.text = String(format: "%.2f", empspay[row].wage * 1.5)
+            rPay.text = String(format: "%.2f", empspay[row].wage * 40)
+            oPay.text = String(format: "%.2f", (empspay[row].wage * 1.5) * Float(time - 40))
+            grossPay = empspay[row].wage * 40 + ((empspay[row].wage * 1.5) * Float(time - 40))
+            tPay.text = String(format: "%.2f" , grossPay)
+        }
+        rRate.text = String(format: "%.2f", empspay[row].wage)
+        let fTax = calcFedIncomeTax(grossPay: grossPay)
+        let sTax = calcStateIncomeTax(grossPay: grossPay)
+        let mTax = calcMedicareTax(grossPay: grossPay)
+        let ssTax = calcSocialTax(grossPay: grossPay)
+        fedTax.text = String(format: "%.2f", fTax)
+        stateTax.text = String(format: "%.2f", sTax)
+        medicareTax.text = String(format: "%.2f", mTax)
+        socialSecurityTax.text = String(format: "%.2f", ssTax)
+        gPay.text = String(format: "%.2f", (grossPay - fTax - sTax - mTax - ssTax))
+        
+    }
     
     // MARK: - Picker funcs
     
@@ -839,7 +984,8 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         displaySchedule(row: row)
         displayTimeStub(row: row)
-        wageText.text = String(empspay[row].wage)
+        displayWage(row: row)
+        displayPayStub(row: row)
         weekChange(pickerView.self)
     }
     
