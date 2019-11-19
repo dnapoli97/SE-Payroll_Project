@@ -6,7 +6,7 @@
 //  Copyright © 2019 Dylan Napoli apps. All rights reserved.
 //
 
-/*import XCTest
+import XCTest
 @testable import Team_1_Payroll
 
 class Team_1_PayrollTests: XCTestCase {
@@ -32,4 +32,4 @@ class Team_1_PayrollTests: XCTestCase {
     }
 
 }
-*/
+

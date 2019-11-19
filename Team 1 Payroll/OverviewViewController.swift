@@ -28,6 +28,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             nextViewController.currentLogin = currentLogin
             nextViewController.managedObjectContext = managedObjectContext
             nextViewController.firstLaunch = firstLaunch
+            nextViewController.defaultDate = defaultDate
         }
     }
     
@@ -50,8 +51,6 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             fatalError("This view needs a persistent container.")
         }
         
-        let user = firstLaunch.getUserDefault
-        defaultDate = user.object(forKey: "defaultDate") as? Date
         
         ScheduleView.isHidden = false
         WorkTimes.isHidden = true
@@ -103,6 +102,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             newEmployee.isHidden = true
             pickerSchedule.reloadAllComponents()
             pickerSchedule.isHidden = false
+            displaySchedule(row: pickerSchedule.selectedRow(inComponent: 0))
             weekChange(0)
             break
         case 1:
@@ -135,6 +135,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             newEmployee.isHidden = true
             pickerSchedule.isHidden = false
             pickerSchedule.reloadAllComponents()
+            displayPayStub(row: pickerSchedule.selectedRow(inComponent: 0))
             rHours.isUserInteractionEnabled = false
             rRate.isUserInteractionEnabled = false
             rPay.isUserInteractionEnabled = false
@@ -157,6 +158,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             newEmployee.isHidden = true
             pickerSchedule.isHidden = false
             pickerSchedule.reloadAllComponents()
+            displayWage(row: pickerSchedule.selectedRow(inComponent: 0))
             wageText.isUserInteractionEnabled = false
             saveWageButton.isHidden = true
             editWageButton.isHidden = false
@@ -189,7 +191,14 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     // Used to unwind from personal view
-    @IBAction func returnToMan(_ unwindSegue: UIStoryboardSegue) {}
+    @IBAction func returnToMan(_ unwindSegue: UIStoryboardSegue) {
+        managedObjectContext.refreshAllObjects()
+        pickerSchedule.reloadAllComponents()
+        displaySchedule(row: pickerSchedule.selectedRow(inComponent: 0))
+        displayPayStub(row: pickerSchedule.selectedRow(inComponent: 0))
+        displayWage(row: pickerSchedule.selectedRow(inComponent: 0))
+        displayTimeStub(row: pickerSchedule.selectedRow(inComponent: 0))
+    }
     
     // MARK: - New Hire
     
@@ -606,36 +615,45 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         let selectedemp = empspay[pickerSchedule.selectedRow(inComponent: 0)]
         
         do{
-            let newClockInPrefix = clockInPrefix.text!.uppercased()
-            let newClockOutPrefix = clockOutPrefix.text!.uppercased()
-            let newClockInMonth = Int(clockInMonth.text!)
-            let newClockInDay = Int(clockInDay.text!)
-            let newClockInYear = Int(clockInYear.text!)
-            var newClockInHour = Int(clockInHour.text!)
-            let newClockInMinutes = Int(clockInMinutes.text!)
-            let newClockOutMonth = Int(clockOutMonth.text!)
-            let newClockOutDay = Int(clockOutDay.text!)
-            let newClockOutYear = Int(clockOutYear.text!)
-            var newClockOutHour = Int(clockOutHour.text!)
-            let newClockOutMinutes = Int(clockOutMinutes.text!)
-            
-            if newClockInPrefix == "AM" && newClockInHour == 12 {
-                newClockInHour = 0
-            }else if newClockInPrefix == "PM" && newClockInHour != 12{
-                newClockInHour = newClockInHour! + 12
-            }
-            if newClockOutPrefix == "AM" && newClockOutHour! == 12 {
-                newClockOutHour = 0
-            }else if newClockOutPrefix == "PM" && newClockOutHour! != 12{
-                newClockOutHour = newClockOutHour! + 12
+            if clockInPrefix.text! == "-" || clockInMonth.text! == "-" || clockInDay.text! == "-" || clockInYear.text! == "-" || clockInHour.text! == "-" || clockInMinutes.text! == "-"{
+                selectedemp.setValue(defaultDate, forKey: "clockIn")
+            }else{
+                let newClockInPrefix = clockInPrefix.text!.uppercased()
+                let newClockInMonth = Int(clockInMonth.text!)
+                let newClockInDay = Int(clockInDay.text!)
+                let newClockInYear = Int(clockInYear.text!)
+                var newClockInHour = Int(clockInHour.text!)
+                let newClockInMinutes = Int(clockInMinutes.text!)
+                if newClockInPrefix == "AM" && newClockInHour == 12 {
+                    newClockInHour = 0
+                }else if newClockInPrefix == "PM" && newClockInHour != 12{
+                    newClockInHour = newClockInHour! + 12
+                }
+                let clockInComponents = DateComponents(calendar: calendar, year: newClockInYear, month: newClockInMonth, day: newClockInDay, hour: newClockInHour, minute: newClockInMinutes)
+                let newClockInDate = calendar.date(from: clockInComponents)
+                selectedemp.setValue(newClockInDate, forKey: "clockIn")
             }
             
-            let clockInComponents = DateComponents(calendar: calendar, year: newClockInYear, month: newClockInMonth, day: newClockInDay, hour: newClockInHour, minute: newClockInMinutes)
-            let clockOutComponents = DateComponents(calendar: calendar, year: newClockOutYear, month: newClockOutMonth, day: newClockOutDay, hour: newClockOutHour, minute: newClockOutMinutes)
-            let newClockInDate = calendar.date(from: clockInComponents)
-            let newClockOutDate = calendar.date(from: clockOutComponents)
-            selectedemp.setValue(newClockInDate, forKey: "clockIn")
-            selectedemp.setValue(newClockOutDate, forKey: "clockOut")
+            if clockOutPrefix.text! == "-" || clockOutMonth.text! == "-" || clockOutDay.text! == "-" || clockOutYear.text! == "-" || clockOutHour.text! == "-" || clockOutMinutes.text! == "-" {
+                selectedemp.setValue(defaultDate, forKey: "clockOut")
+            }else{
+                let newClockOutPrefix = clockOutPrefix.text!.uppercased()
+                let newClockOutMonth = Int(clockOutMonth.text!)
+                let newClockOutDay = Int(clockOutDay.text!)
+                let newClockOutYear = Int(clockOutYear.text!)
+                var newClockOutHour = Int(clockOutHour.text!)
+                let newClockOutMinutes = Int(clockOutMinutes.text!)
+                if newClockOutPrefix == "AM" && newClockOutHour! == 12 {
+                    newClockOutHour = 0
+                }else if newClockOutPrefix == "PM" && newClockOutHour! != 12{
+                    newClockOutHour = newClockOutHour! + 12
+                }
+                
+                let clockOutComponents = DateComponents(calendar: calendar, year: newClockOutYear, month: newClockOutMonth, day: newClockOutDay, hour: newClockOutHour, minute: newClockOutMinutes)
+                let newClockOutDate = calendar.date(from: clockOutComponents)
+                selectedemp.setValue(newClockOutDate, forKey: "clockOut")
+            }
+            
             try managedObjectContext.save()
             displayTimeStub(row:pickerSchedule.selectedRow(inComponent: 0))
             clockInMonth.isUserInteractionEnabled = false
@@ -904,7 +922,18 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     func displayPayStub(row: Int){
-        let time = ((empspay[row].time + Double (empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!))) / 3600)
+        var time: Double!
+        let cin = empspay[row].clockIn!
+        let cout = empspay[row].clockOut!
+        let dfal = defaultDate!
+        if (cout) != (dfal) {
+            time = ((empspay[row].time + Double (cout.timeIntervalSince(cin))) / 3600)
+        } else if cin != dfal{
+            let tempdate = Date.init()
+            time = ((empspay[row].time + Double (tempdate.timeIntervalSince(cin))) / 3600)
+        }else{
+            time = ((empspay[row].time + Double (cout.timeIntervalSince(cin))) / 3600)
+        }
         let grossPay: Float
         tHours.text = String(format: "%.2f", time)
         if time <= 40 {
