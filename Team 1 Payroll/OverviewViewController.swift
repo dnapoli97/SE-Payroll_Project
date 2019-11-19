@@ -82,6 +82,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         displayTimeStub(row: 0)
         displayPayStub(row: 0)
         displayWage(row: 0)
+        weekChange(0)
     }
     
     @IBOutlet weak var newEmployee: UIView!
@@ -103,6 +104,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             newEmployee.isHidden = true
             pickerSchedule.reloadAllComponents()
             pickerSchedule.isHidden = false
+            weekChange(0)
             break
         case 1:
             ScheduleView.isHidden = true
