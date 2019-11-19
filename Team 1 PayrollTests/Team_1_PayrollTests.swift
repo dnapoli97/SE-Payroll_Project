@@ -44,7 +44,7 @@ class Team_1_PayrollTests: XCTestCase {
                         currentPay = result.pay
                         currentInfo = result.info
                         currentSch = result.schedule
-                        print(<#T##items: Any...##Any#>)
+                        
                     }
                 }
             }catch{
