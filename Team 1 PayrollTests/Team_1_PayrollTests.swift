@@ -44,6 +44,7 @@ class Team_1_PayrollTests: XCTestCase {
                         currentPay = result.pay
                         currentInfo = result.info
                         currentSch = result.schedule
+                        print(<#T##items: Any...##Any#>)
                     }
                 }
             }catch{
@@ -52,7 +53,7 @@ class Team_1_PayrollTests: XCTestCase {
         
         print(currentLogin.id)
         print(currentLogin.password!)
-        print(currentSch.day0)
+        print(currentSch.day0!)
         
         //testPunchCard.currentLogin = employee
         //testPunchCard.firstLaunch = first
