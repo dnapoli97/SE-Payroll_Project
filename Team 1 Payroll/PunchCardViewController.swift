@@ -4,7 +4,7 @@
 //
 //  Created by Dylan Napoli on 10/16/19.
 //  Copyright © 2019 Dylan Napoli apps. All rights reserved.
-//
+//  Code reviewed by Evan Scruggs 11/20/19
 
 import UIKit
 import CoreData

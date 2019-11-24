@@ -4,7 +4,7 @@
 //
 //  Created by Dylan Napoli on 10/10/19.
 //  Copyright © 2019 Dylan Napoli apps. All rights reserved.
-//
+//  code review done by Evan Scruggs 11/22/19
 
 import UIKit
 import SQLite
