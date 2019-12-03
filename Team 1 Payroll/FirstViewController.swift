@@ -172,8 +172,8 @@ extension FirstViewController{
             do{
                 let results = try context.fetch(fetchRequest)
                 for result in results{
-                    if let testValue = result.accessibilityElements{
-                        print(testValue.description)
+                    if result.info?.firstName == "admin"{
+                        currentLogin = result
                     }
                 }
             }catch{
