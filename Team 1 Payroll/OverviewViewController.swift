@@ -822,9 +822,9 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var socialSecurityTax: UITextField!
     @IBOutlet weak var gPay: UITextField!
     
-    func calcFedIncomeTax(grossPay: Float) -> Float{
+    func calcFedIncomeTax(grossPay: Float, married: Bool) -> Float{
         var tax: Float
-        if empsInfo[pickerSchedule.selectedRow(inComponent: 0)].married{
+        if married{
             if grossPay < 588 {
                 tax = grossPay - 222
                 tax = tax * 0.1
@@ -926,7 +926,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             tPay.text = String(format: "%.2f" , grossPay)
         }
         rRate.text = String(format: "%.2f", empspay[row].wage)
-        let fTax = calcFedIncomeTax(grossPay: grossPay)
+        let fTax = calcFedIncomeTax(grossPay: grossPay,married: empsInfo[pickerSchedule.selectedRow(inComponent: 0)].married)
         let sTax = calcStateIncomeTax(grossPay: grossPay)
         let mTax = calcMedicareTax(grossPay: grossPay)
         let ssTax = calcSocialTax(grossPay: grossPay)
