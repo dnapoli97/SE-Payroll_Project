@@ -2271,7 +2271,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="2fM-ca-ILa" secondAttribute="trailing" constant="202" id="D0k-M1-BWe"/>
                             <constraint firstItem="jTp-pv-zUK" firstAttribute="trailing" secondItem="DVh-0D-pbh" secondAttribute="trailing" id="D8u-0G-ZaF"/>
