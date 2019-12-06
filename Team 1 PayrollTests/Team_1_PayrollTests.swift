@@ -303,31 +303,27 @@ class Team_1_PayrollTests: XCTestCase {
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay), "Success")
         
         //tax value when 2970 <= $ < 5940
-        pay *= 52
+        pay = 100
         tax = pay * 0.03
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
         
         //tax value when 5940 <= $ < 8910
         pay = 150
-        pay *= 52
         tax = pay * 0.04
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
         
         //tax value when 8910 <= $ < 11880
         pay = 200
-        pay *= 52
         tax = pay * 0.05
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
         
         //tax value when 11880 <= $ < 14860
         pay = 250
-        pay *= 52
         tax = pay * 0.06
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
         
         //tax value when 14860 <= $ < infinity
         pay = 1000
-        pay *= 52
         tax = pay * 0.07
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
     }
@@ -452,7 +448,6 @@ class Team_1_PayrollTests: XCTestCase {
             }
         
         var pay, tax: Float
-        var empsInfo:[Employee_Info]!
         let p = Team_1_Payroll.OverviewViewController()
         
         //set the value of the current login as a married status
@@ -468,49 +463,49 @@ class Team_1_PayrollTests: XCTestCase {
         else{
             tax = 0
         }
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: true))
         
         //tests the bracket ranging up to 588 (anything too low gets caught by outside if
         pay = 500
         tax = pay - 222
         tax = tax * 0.1
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: true))
         
         //tests the bracket from 588 <= $ < 1788
         pay = 1700
         tax = pay - 283
         tax = tax * 0.12
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: true))
         
         //tests the bracket from 1788 <= $ < 3395
         pay = 3300
         tax = pay - 932.09
         tax *= 0.22
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: true))
         
         //tests the bracket from 3395 <= $ < 6280
         pay = 6200
         tax = pay - 1137.33
         tax *= 0.24
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: true))
         
         //tests the bracket from 6280 <= $ < 7914
         pay = 7900
         tax = pay - 2423
         tax *= 0.32
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: true))
         
         //tests the bracket from 7914 <= $ < 11761
         pay = 11700
         tax = pay - 2893.66
         tax *= 0.35
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: true))
         
         //tests the bracket from 11761 <= $ < infinity
         pay = 20000
         tax = pay - 3372.97
         tax *= 0.37
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: true))
         
         //now repeat with a married value set to false(single employees)
         
@@ -520,43 +515,43 @@ class Team_1_PayrollTests: XCTestCase {
         pay = 250
         tax = pay - 71
         tax = tax * 0.1
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: false))
         
         //tests the bracket from 254 <= $ < 815
         pay = 800
         tax = pay - 101.5
         tax = tax * 0.12
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: false))
         
         //tests the bracket from 815 <= $ < 1658
         pay = 1600
         tax = pay - 425.82
         tax *= 0.22
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: false))
         
         //tests the bracket from 1658 <= $ < 3100
         pay = 3000
         tax = pay - 528.50
         tax *= 0.24
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: false))
         
         //tests the bracket from 3100 <= $ < 3917
         pay = 3900
         tax = pay - 1171.38
         tax *= 0.32
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: false))
         
         //tests the bracket from 3917 <= $ < 9687
         pay = 9600
         tax = pay - 1406.71
         tax *= 0.35
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: false))
         
         //tests the bracket from 9687 <= $ < infinity
         pay = 10000
         tax = pay - 1854.30
         tax *= 0.37
-        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay))
+        XCTAssertTrue(tax == p.calcFedIncomeTax(grossPay: pay, married: false))
     }
     
     func testOverviewViewController_calcSocialTax(){
@@ -666,31 +661,27 @@ class Team_1_PayrollTests: XCTestCase {
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay), "Success")
         
         //tax value when 2970 <= $ < 5940
-        pay *= 52
+        pay = 100
         tax = pay * 0.03
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
         
         //tax value when 5940 <= $ < 8910
         pay = 150
-        pay *= 52
         tax = pay * 0.04
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
         
         //tax value when 8910 <= $ < 11880
         pay = 200
-        pay *= 52
         tax = pay * 0.05
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
         
         //tax value when 11880 <= $ < 14860
         pay = 250
-        pay *= 52
         tax = pay * 0.06
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
         
         //tax value when 14860 <= $ < infinity
         pay = 1000
-        pay *= 52
         tax = pay * 0.07
         XCTAssertTrue(tax == p.calcStateIncomeTax(grossPay: pay))
     }
