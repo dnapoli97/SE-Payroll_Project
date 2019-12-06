@@ -839,6 +839,10 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var socialSecurityTax: UITextField!
     @IBOutlet weak var gPay: UITextField!
     
+    
+    // Function used to calculate federal taxes based on gross income and marital status
+    // parameters: Employee gross income (float), Employee marital status
+    // Output: tax (float)
     func calcFedIncomeTax(grossPay: Float, married: Bool) -> Float{
         var tax: Float
         if married{
@@ -889,6 +893,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             }
         
         }
+        // Due to the tax bracket and calculation it is possible to get a negative number
         if tax > 0{
             return tax
         }
@@ -921,12 +926,18 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         return tax
     }
     
+    // This function updates the GUI with a selected employee's current paystub
+    // Parameter: Int index the employee is in the picker UI. This index is used to reference the arrays with all the employee's info
     func displayPayStub(row: Int){
         var time: Double!
+        // assigns the selected employee's clock in and clock out time for referencing quickly
         let cin = empspay[row].clockIn!
         let cout = empspay[row].clockOut!
+        // default date is the value assigned in the database when a current clock in/clock out is not present in the employees data
         let dfal = defaultDate!
+        // checking if the currently selected employee's clock out is the defualt or not
         if (cout) != (dfal) {
+            // all functions calculate the current finalized times plus their current time if they are on the clock
             time = ((empspay[row].time + Double (cout.timeIntervalSince(cin))) / 3600)
         } else if cin != dfal{
             let tempdate = Date.init()
@@ -936,6 +947,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         }
         let grossPay: Float
         tHours.text = String(format: "%.2f", time)
+        // Determines if the employee has overtime pay or not and presents the data accordingly
         if time <= 40 {
             rHours.text = String(format: "%.2f", time)
             rPay.text = String(format: "%.2f", empspay[row].wage * Float(time))
@@ -954,9 +966,13 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             tPay.text = String(format: "%.2f" , grossPay)
         }
         rRate.text = String(format: "%.2f", empspay[row].wage)
+        // calls fed tax calculation function, value returned is a float
         let fTax = calcFedIncomeTax(grossPay: grossPay,married: empsInfo[pickerSchedule.selectedRow(inComponent: 0)].married)
+        // calls state tax calculation function, value returned is a float
         let sTax = calcStateIncomeTax(grossPay: grossPay)
+        // calls medicare tax calculation function,
         let mTax = calcMedicareTax(grossPay: grossPay)
+        // calls social security tax calculation function, value returned is a float
         let ssTax = calcSocialTax(grossPay: grossPay)
         fedTax.text = String(format: "%.2f", fTax)
         stateTax.text = String(format: "%.2f", sTax)
@@ -972,41 +988,49 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             1
         }
         
-        func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-            empNames = []
-            empsInfo = []
-            emps = []
-            empssch = []
-            empspay = []
-            empsUsername = []
-             let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-                do{
-                    let results = try managedObjectContext.fetch(fetchRequest)
-                    for result in results{
-                        empsUsername.append(result.username!)
-                        if let empinfo = result.info{
-                            if let first = empinfo.firstName{
-                                if let last = empinfo.lastName{
-                                    let name = last + ", " + first
-                                    empNames.append(name)
-                                    if let empsch = result.schedule{
-                                        empssch.append(empsch)
-                                    }
-                                    if let emppay = result.pay{
-                                        empspay.append(emppay)
-                                    }
-                                    empsInfo.append(empinfo)
-                                    emps.append(result)
-                                }
+    // This function is used to assign the amount of rows needed in the UIPicker, It is calculated based on the number of employees
+    // Parameters: The UIPickerView object, Int index of which componet it's being assigned to
+    // Returns: number of rows for the picker view
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        empNames = []
+        empsInfo = []
+        emps = []
+        empssch = []
+        empspay = []
+        empsUsername = []
+        // creates a fetchRequest to retrieve all employees from the database and sorts them all by id
+        let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        do{
+            // assigns the results of the fetch request to results
+            let results = try managedObjectContext.fetch(fetchRequest)
+            // every employee is added in to the arrays created to store their info
+            // The index in the UIPicker match the index of the employee in each array
+            for result in results{
+                empsUsername.append(result.username!)
+                if let empinfo = result.info{
+                    if let first = empinfo.firstName{
+                        if let last = empinfo.lastName{
+                            let name = last + ", " + first
+                            empNames.append(name)
+                            if let empsch = result.schedule{
+                                empssch.append(empsch)
                             }
+                            if let emppay = result.pay{
+                                empspay.append(emppay)
+                            }
+                            empsInfo.append(empinfo)
+                            emps.append(result)
                         }
                     }
-                    return results.count
-                }catch{
-                    print(Error.self)
+                }
             }
-        return 0
+            // The total number of employees in returned
+            return results.count
+        }catch{
+            print(Error.self)
+        }
+    return 0
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return empNames[row]

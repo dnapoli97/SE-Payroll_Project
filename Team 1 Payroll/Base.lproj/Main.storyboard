@@ -764,7 +764,6 @@
                                     <segment title="Schedule"/>
                                     <segment title="Personal Info"/>
                                     <segment title="Pay Stub"/>
-                                    <segment title="Temp"/>
                                 </segments>
                                 <connections>
                                     <action selector="indexChange:" destination="w4I-e1-Gjj" eventType="valueChanged" id="hhy-Ns-sLs"/>
@@ -2403,6 +2402,6 @@
         <image name="second" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sa1-JP-zOY"/>
+        <segue reference="131-D9-V4F"/>
     </inferredMetricsTieBreakers>
 </document>
