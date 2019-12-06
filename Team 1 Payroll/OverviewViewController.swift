@@ -29,6 +29,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             nextViewController.currentLogin = currentLogin
             nextViewController.managedObjectContext = managedObjectContext
             nextViewController.firstLaunch = firstLaunch
+            nextViewController.defaultDate = defaultDate
         }
     }
     
@@ -51,8 +52,6 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             fatalError("This view needs a persistent container.")
         }
         
-        let user = firstLaunch.getUserDefault
-        defaultDate = user.object(forKey: "defaultDate") as? Date
         
         ScheduleView.isHidden = false
         WorkTimes.isHidden = true
@@ -104,6 +103,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             newEmployee.isHidden = true
             pickerSchedule.reloadAllComponents()
             pickerSchedule.isHidden = false
+            displaySchedule(row: pickerSchedule.selectedRow(inComponent: 0))
             weekChange(0)
             break
         case 1:
@@ -136,6 +136,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             newEmployee.isHidden = true
             pickerSchedule.isHidden = false
             pickerSchedule.reloadAllComponents()
+            displayPayStub(row: pickerSchedule.selectedRow(inComponent: 0))
             rHours.isUserInteractionEnabled = false
             rRate.isUserInteractionEnabled = false
             rPay.isUserInteractionEnabled = false
@@ -158,6 +159,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             newEmployee.isHidden = true
             pickerSchedule.isHidden = false
             pickerSchedule.reloadAllComponents()
+            displayWage(row: pickerSchedule.selectedRow(inComponent: 0))
             wageText.isUserInteractionEnabled = false
             saveWageButton.isHidden = true
             editWageButton.isHidden = false
@@ -190,7 +192,14 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     }
     
     // Used to unwind from personal view
-    @IBAction func returnToMan(_ unwindSegue: UIStoryboardSegue) {}
+    @IBAction func returnToMan(_ unwindSegue: UIStoryboardSegue) {
+        managedObjectContext.refreshAllObjects()
+        pickerSchedule.reloadAllComponents()
+        displaySchedule(row: pickerSchedule.selectedRow(inComponent: 0))
+        displayPayStub(row: pickerSchedule.selectedRow(inComponent: 0))
+        displayWage(row: pickerSchedule.selectedRow(inComponent: 0))
+        displayTimeStub(row: pickerSchedule.selectedRow(inComponent: 0))
+    }
     
     // MARK: - New Hire
     
@@ -607,36 +616,45 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         let selectedemp = empspay[pickerSchedule.selectedRow(inComponent: 0)]
         
         do{
-            let newClockInPrefix = clockInPrefix.text!.uppercased()
-            let newClockOutPrefix = clockOutPrefix.text!.uppercased()
-            let newClockInMonth = Int(clockInMonth.text!)
-            let newClockInDay = Int(clockInDay.text!)
-            let newClockInYear = Int(clockInYear.text!)
-            var newClockInHour = Int(clockInHour.text!)
-            let newClockInMinutes = Int(clockInMinutes.text!)
-            let newClockOutMonth = Int(clockOutMonth.text!)
-            let newClockOutDay = Int(clockOutDay.text!)
-            let newClockOutYear = Int(clockOutYear.text!)
-            var newClockOutHour = Int(clockOutHour.text!)
-            let newClockOutMinutes = Int(clockOutMinutes.text!)
-            
-            if newClockInPrefix == "AM" && newClockInHour == 12 {
-                newClockInHour = 0
-            }else if newClockInPrefix == "PM" && newClockInHour != 12{
-                newClockInHour = newClockInHour! + 12
-            }
-            if newClockOutPrefix == "AM" && newClockOutHour! == 12 {
-                newClockOutHour = 0
-            }else if newClockOutPrefix == "PM" && newClockOutHour! != 12{
-                newClockOutHour = newClockOutHour! + 12
+            if clockInPrefix.text! == "-" || clockInMonth.text! == "-" || clockInDay.text! == "-" || clockInYear.text! == "-" || clockInHour.text! == "-" || clockInMinutes.text! == "-"{
+                selectedemp.setValue(defaultDate, forKey: "clockIn")
+            }else{
+                let newClockInPrefix = clockInPrefix.text!.uppercased()
+                let newClockInMonth = Int(clockInMonth.text!)
+                let newClockInDay = Int(clockInDay.text!)
+                let newClockInYear = Int(clockInYear.text!)
+                var newClockInHour = Int(clockInHour.text!)
+                let newClockInMinutes = Int(clockInMinutes.text!)
+                if newClockInPrefix == "AM" && newClockInHour == 12 {
+                    newClockInHour = 0
+                }else if newClockInPrefix == "PM" && newClockInHour != 12{
+                    newClockInHour = newClockInHour! + 12
+                }
+                let clockInComponents = DateComponents(calendar: calendar, year: newClockInYear, month: newClockInMonth, day: newClockInDay, hour: newClockInHour, minute: newClockInMinutes)
+                let newClockInDate = calendar.date(from: clockInComponents)
+                selectedemp.setValue(newClockInDate, forKey: "clockIn")
             }
             
-            let clockInComponents = DateComponents(calendar: calendar, year: newClockInYear, month: newClockInMonth, day: newClockInDay, hour: newClockInHour, minute: newClockInMinutes)
-            let clockOutComponents = DateComponents(calendar: calendar, year: newClockOutYear, month: newClockOutMonth, day: newClockOutDay, hour: newClockOutHour, minute: newClockOutMinutes)
-            let newClockInDate = calendar.date(from: clockInComponents)
-            let newClockOutDate = calendar.date(from: clockOutComponents)
-            selectedemp.setValue(newClockInDate, forKey: "clockIn")
-            selectedemp.setValue(newClockOutDate, forKey: "clockOut")
+            if clockOutPrefix.text! == "-" || clockOutMonth.text! == "-" || clockOutDay.text! == "-" || clockOutYear.text! == "-" || clockOutHour.text! == "-" || clockOutMinutes.text! == "-" {
+                selectedemp.setValue(defaultDate, forKey: "clockOut")
+            }else{
+                let newClockOutPrefix = clockOutPrefix.text!.uppercased()
+                let newClockOutMonth = Int(clockOutMonth.text!)
+                let newClockOutDay = Int(clockOutDay.text!)
+                let newClockOutYear = Int(clockOutYear.text!)
+                var newClockOutHour = Int(clockOutHour.text!)
+                let newClockOutMinutes = Int(clockOutMinutes.text!)
+                if newClockOutPrefix == "AM" && newClockOutHour! == 12 {
+                    newClockOutHour = 0
+                }else if newClockOutPrefix == "PM" && newClockOutHour! != 12{
+                    newClockOutHour = newClockOutHour! + 12
+                }
+                
+                let clockOutComponents = DateComponents(calendar: calendar, year: newClockOutYear, month: newClockOutMonth, day: newClockOutDay, hour: newClockOutHour, minute: newClockOutMinutes)
+                let newClockOutDate = calendar.date(from: clockOutComponents)
+                selectedemp.setValue(newClockOutDate, forKey: "clockOut")
+            }
+            
             try managedObjectContext.save()
             displayTimeStub(row:pickerSchedule.selectedRow(inComponent: 0))
             clockInMonth.isUserInteractionEnabled = false
@@ -822,9 +840,13 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
     @IBOutlet weak var socialSecurityTax: UITextField!
     @IBOutlet weak var gPay: UITextField!
     
-    func calcFedIncomeTax(grossPay: Float) -> Float{
+    
+    // Function used to calculate federal taxes based on gross income and marital status
+    // parameters: Employee gross income (float), Employee marital status
+    // Output: tax (float)
+    func calcFedIncomeTax(grossPay: Float, married: Bool) -> Float{
         var tax: Float
-        if empsInfo[pickerSchedule.selectedRow(inComponent: 0)].married{
+        if married{
             if grossPay < 588 {
                 tax = grossPay - 222
                 tax = tax * 0.1
@@ -872,6 +894,7 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             }
         
         }
+        // Due to the tax bracket and calculation it is possible to get a negative number
         if tax > 0{
             return tax
         }
@@ -904,10 +927,28 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
         return tax
     }
     
+    // This function updates the GUI with a selected employee's current paystub
+    // Parameter: Int index the employee is in the picker UI. This index is used to reference the arrays with all the employee's info
     func displayPayStub(row: Int){
-        let time = ((empspay[row].time + Double (empspay[row].clockOut!.timeIntervalSince(empspay[row].clockIn!))) / 3600)
+        var time: Double!
+        // assigns the selected employee's clock in and clock out time for referencing quickly
+        let cin = empspay[row].clockIn!
+        let cout = empspay[row].clockOut!
+        // default date is the value assigned in the database when a current clock in/clock out is not present in the employees data
+        let dfal = defaultDate!
+        // checking if the currently selected employee's clock out is the defualt or not
+        if (cout) != (dfal) {
+            // all functions calculate the current finalized times plus their current time if they are on the clock
+            time = ((empspay[row].time + Double (cout.timeIntervalSince(cin))) / 3600)
+        } else if cin != dfal{
+            let tempdate = Date.init()
+            time = ((empspay[row].time + Double (tempdate.timeIntervalSince(cin))) / 3600)
+        }else{
+            time = ((empspay[row].time + Double (cout.timeIntervalSince(cin))) / 3600)
+        }
         let grossPay: Float
         tHours.text = String(format: "%.2f", time)
+        // Determines if the employee has overtime pay or not and presents the data accordingly
         if time <= 40 {
             rHours.text = String(format: "%.2f", time)
             rPay.text = String(format: "%.2f", empspay[row].wage * Float(time))
@@ -926,9 +967,13 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             tPay.text = String(format: "%.2f" , grossPay)
         }
         rRate.text = String(format: "%.2f", empspay[row].wage)
-        let fTax = calcFedIncomeTax(grossPay: grossPay)
+        // calls fed tax calculation function, value returned is a float
+        let fTax = calcFedIncomeTax(grossPay: grossPay,married: empsInfo[pickerSchedule.selectedRow(inComponent: 0)].married)
+        // calls state tax calculation function, value returned is a float
         let sTax = calcStateIncomeTax(grossPay: grossPay)
+        // calls medicare tax calculation function,
         let mTax = calcMedicareTax(grossPay: grossPay)
+        // calls social security tax calculation function, value returned is a float
         let ssTax = calcSocialTax(grossPay: grossPay)
         fedTax.text = String(format: "%.2f", fTax)
         stateTax.text = String(format: "%.2f", sTax)
@@ -944,41 +989,49 @@ class OverviewViewController: UIViewController, UIPickerViewDataSource, UIPicker
             1
         }
         
-        func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-            empNames = []
-            empsInfo = []
-            emps = []
-            empssch = []
-            empspay = []
-            empsUsername = []
-             let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-                do{
-                    let results = try managedObjectContext.fetch(fetchRequest)
-                    for result in results{
-                        empsUsername.append(result.username!)
-                        if let empinfo = result.info{
-                            if let first = empinfo.firstName{
-                                if let last = empinfo.lastName{
-                                    let name = last + ", " + first
-                                    empNames.append(name)
-                                    if let empsch = result.schedule{
-                                        empssch.append(empsch)
-                                    }
-                                    if let emppay = result.pay{
-                                        empspay.append(emppay)
-                                    }
-                                    empsInfo.append(empinfo)
-                                    emps.append(result)
-                                }
+    // This function is used to assign the amount of rows needed in the UIPicker, It is calculated based on the number of employees
+    // Parameters: The UIPickerView object, Int index of which componet it's being assigned to
+    // Returns: number of rows for the picker view
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        empNames = []
+        empsInfo = []
+        emps = []
+        empssch = []
+        empspay = []
+        empsUsername = []
+        // creates a fetchRequest to retrieve all employees from the database and sorts them all by id
+        let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        do{
+            // assigns the results of the fetch request to results
+            let results = try managedObjectContext.fetch(fetchRequest)
+            // every employee is added in to the arrays created to store their info
+            // The index in the UIPicker match the index of the employee in each array
+            for result in results{
+                empsUsername.append(result.username!)
+                if let empinfo = result.info{
+                    if let first = empinfo.firstName{
+                        if let last = empinfo.lastName{
+                            let name = last + ", " + first
+                            empNames.append(name)
+                            if let empsch = result.schedule{
+                                empssch.append(empsch)
                             }
+                            if let emppay = result.pay{
+                                empspay.append(emppay)
+                            }
+                            empsInfo.append(empinfo)
+                            emps.append(result)
                         }
                     }
-                    return results.count
-                }catch{
-                    print(Error.self)
+                }
             }
-        return 0
+            // The total number of employees in returned
+            return results.count
+        }catch{
+            print(Error.self)
+        }
+    return 0
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return empNames[row]

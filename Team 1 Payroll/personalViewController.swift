@@ -17,6 +17,7 @@ class personalViewController: UIViewController {
     var empSchedule: Schedule!
     var empPay: Pay!
     var firstLaunch: FirstLaunch!
+    var defaultDate: Date!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "manager" {
@@ -40,6 +41,35 @@ class personalViewController: UIViewController {
         personal_Info.isHidden = true
         payStub.isHidden = true
         temp.isHidden = true
+        nextMonday.isUserInteractionEnabled = false
+        nextTuesday.isUserInteractionEnabled = false
+        nextWednesday.isUserInteractionEnabled = false
+        nextThursday.isUserInteractionEnabled = false
+        nextFriday.isUserInteractionEnabled = false
+        nextSaturday.isUserInteractionEnabled = false
+        nextSunday.isUserInteractionEnabled = false
+        currentMonday.isUserInteractionEnabled = false
+        currentTuesday.isUserInteractionEnabled = false
+        currentWednesday.isUserInteractionEnabled = false
+        currentThursday.isUserInteractionEnabled = false
+        currentFriday.isUserInteractionEnabled = false
+        currentSaturday.isUserInteractionEnabled = false
+        currentSunday.isUserInteractionEnabled = false
+        rHours.isUserInteractionEnabled = false
+        rRate.isUserInteractionEnabled = false
+        rPay.isUserInteractionEnabled = false
+        oHours.isUserInteractionEnabled = false
+        oRate.isUserInteractionEnabled = false
+        oPay.isUserInteractionEnabled = false
+        tHours.isUserInteractionEnabled = false
+        tPay.isUserInteractionEnabled = false
+        fedTax.isUserInteractionEnabled = false
+        stateTax.isUserInteractionEnabled = false
+        medicareTax.isUserInteractionEnabled = false
+        socialSecurityTax.isUserInteractionEnabled = false
+        gPay.isUserInteractionEnabled = false
+        
+        nextWeek.isHidden = true
         
         if managedObjectContext == nil{
             managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -51,6 +81,10 @@ class personalViewController: UIViewController {
         if !currentLogin.ismanager {
             managerViewButton.isHidden = true
         }
+        
+        displaySchedule()
+        displayPayStub()
+        displayPersonalInfo()
         
     }
     
@@ -72,12 +106,33 @@ class personalViewController: UIViewController {
             personal_Info.isHidden = true
             payStub.isHidden = true
             temp.isHidden = true
+            nextMonday.isUserInteractionEnabled = false
+            nextTuesday.isUserInteractionEnabled = false
+            nextWednesday.isUserInteractionEnabled = false
+            nextThursday.isUserInteractionEnabled = false
+            nextFriday.isUserInteractionEnabled = false
+            nextSaturday.isUserInteractionEnabled = false
+            nextSunday.isUserInteractionEnabled = false
+            currentMonday.isUserInteractionEnabled = false
+            currentTuesday.isUserInteractionEnabled = false
+            currentWednesday.isUserInteractionEnabled = false
+            currentThursday.isUserInteractionEnabled = false
+            currentFriday.isUserInteractionEnabled = false
+            currentSaturday.isUserInteractionEnabled = false
+            currentSunday.isUserInteractionEnabled = false
+            displaySchedule()
             break
         case 1:
             schedule.isHidden = true
             personal_Info.isHidden = false
             payStub.isHidden = true
             temp.isHidden = true
+            fname.isUserInteractionEnabled = false
+            lname.isUserInteractionEnabled = false
+            address.isUserInteractionEnabled = false
+            phone.isUserInteractionEnabled = false
+            married.isUserInteractionEnabled = false
+            personalSave.isHidden = true
             break
         case 2:
             schedule.isHidden = true
@@ -201,7 +256,15 @@ class personalViewController: UIViewController {
     
     func displayPayStub(){
         let pay = currentLogin.pay!
-        let time = ((pay.time + Double (pay.clockOut!.timeIntervalSince(pay.clockIn!))) / 3600)
+        var time: Double!
+        if (pay.clockOut!) != (defaultDate!) {
+            time = ((pay.time + Double (pay.clockOut!.timeIntervalSince(pay.clockIn!))) / 3600)
+        } else if pay.clockIn! != defaultDate!{
+            let tempdate = Date.init()
+            time = ((pay.time + Double (tempdate.timeIntervalSince(pay.clockIn!))) / 3600)
+        }else{
+            time = ((pay.time + Double (pay.clockOut!.timeIntervalSince(pay.clockIn!))) / 3600)
+        }
         let grossPay: Float
         tHours.text = String(format: "%.2f", time)
         if time <= 40 {
@@ -234,50 +297,133 @@ class personalViewController: UIViewController {
         
     }
     
+    // MARK: - Schedule
     
-}
-
-
-
-
-extension personalViewController{
-    func changeInfo(){
-        let fetchRequest = NSFetchRequest<Employee>(entityName: "Employee")
-        do{
-            let results = try managedObjectContext.fetch(fetchRequest)
-            for result in results{
-                if "admin" == result.username{
-                    guard let entityDescriptionInfo = NSEntityDescription.entity(forEntityName: "Employee_Info", in: managedObjectContext) else {
-                        return
-                    }
-                     let newValueInfo = Employee_Info(entity: entityDescriptionInfo, insertInto: managedObjectContext)
-                    guard let entityDescriptionSchedule = NSEntityDescription.entity(forEntityName: "Schedule", in: managedObjectContext) else {
-                        return
-                    }
-                     let newValueSchedule = Schedule(entity: entityDescriptionSchedule, insertInto: managedObjectContext)
-                    guard let entityDescriptionPay = NSEntityDescription.entity(forEntityName: "Pay", in: managedObjectContext) else {
-                        return
-                    }
-                     let newValuePay = Pay(entity: entityDescriptionPay, insertInto: managedObjectContext)
-                    result.setValue(0, forKey: "id")
-                    result.setValue(true, forKey: "ismanager")
-                    newValueInfo.setValue("admin", forKey: "firstName")
-                    newValueInfo.setValue("admin", forKey: "lastName")
-                    newValueInfo.setValue("123 Peach Rd", forKey: "homeAddress")
-                    result.setValue(newValueInfo, forKey: "info")
-                    result.setValue(newValueSchedule, forKey: "schedule")
-                    result.setValue(newValuePay, forKey: "pay")
-                    do{
-                        try managedObjectContext.save()
-                        print("Saved: true")
-                    }catch{
-                        print("Saving Error")
-                    }
-                }
-            }
-        }catch{
-            print(error.self)
+    @IBOutlet weak var weekSelect: UISegmentedControl!
+    @IBOutlet weak var currentWeek: UIView!
+    @IBOutlet weak var nextWeek: UIView!
+    @IBOutlet weak var currentMonday: UITextField!
+    @IBOutlet weak var currentTuesday: UITextField!
+    @IBOutlet weak var currentWednesday: UITextField!
+    @IBOutlet weak var currentThursday: UITextField!
+    @IBOutlet weak var currentFriday: UITextField!
+    @IBOutlet weak var currentSaturday: UITextField!
+    @IBOutlet weak var currentSunday: UITextField!
+    @IBOutlet weak var nextMonday: UITextField!
+    @IBOutlet weak var nextTuesday: UITextField!
+    @IBOutlet weak var nextWednesday: UITextField!
+    @IBOutlet weak var nextThursday: UITextField!
+    @IBOutlet weak var nextFriday: UITextField!
+    @IBOutlet weak var nextSaturday: UITextField!
+    @IBOutlet weak var nextSunday: UITextField!
+    
+    func displaySchedule(){
+        currentMonday.text = currentLogin.schedule!.day0
+        currentTuesday.text = currentLogin.schedule!.day1
+        currentWednesday.text = currentLogin.schedule!.day2
+        currentThursday.text = currentLogin.schedule!.day3
+        currentFriday.text = currentLogin.schedule!.day4
+        currentSaturday.text = currentLogin.schedule!.day5
+        currentSunday.text = currentLogin.schedule!.day6
+        nextMonday.text = currentLogin.schedule!.day7
+        nextTuesday.text = currentLogin.schedule!.day8
+        nextWednesday.text = currentLogin.schedule!.day9
+        nextThursday.text = currentLogin.schedule!.day10
+        nextFriday.text = currentLogin.schedule!.day11
+        nextSaturday.text = currentLogin.schedule!.day12
+        nextSunday.text = currentLogin.schedule!.day13
+    }
+    
+    @IBAction func weekChange(_ sender: Any) {
+        switch weekSelect.selectedSegmentIndex {
+        case 0:
+            currentWeek.isHidden = false
+            nextWeek.isHidden = true
+            currentMonday.isUserInteractionEnabled = false
+            currentTuesday.isUserInteractionEnabled = false
+            currentWednesday.isUserInteractionEnabled = false
+            currentThursday.isUserInteractionEnabled = false
+            currentFriday.isUserInteractionEnabled = false
+            currentSaturday.isUserInteractionEnabled = false
+            currentSunday.isUserInteractionEnabled = false
+            break
+        case 1:
+            currentWeek.isHidden = true
+            nextWeek.isHidden = false
+            nextMonday.isUserInteractionEnabled = false
+            nextTuesday.isUserInteractionEnabled = false
+            nextWednesday.isUserInteractionEnabled = false
+            nextThursday.isUserInteractionEnabled = false
+            nextFriday.isUserInteractionEnabled = false
+            nextSaturday.isUserInteractionEnabled = false
+            nextSunday.isUserInteractionEnabled = false
+            break
+        default:
+            currentWeek.isHidden = false
+            nextWeek.isHidden = true
+            nextMonday.isUserInteractionEnabled = false
+            nextTuesday.isUserInteractionEnabled = false
+            nextWednesday.isUserInteractionEnabled = false
+            nextThursday.isUserInteractionEnabled = false
+            nextFriday.isUserInteractionEnabled = false
+            nextSaturday.isUserInteractionEnabled = false
+            nextSunday.isUserInteractionEnabled = false
+            currentMonday.isUserInteractionEnabled = false
+            currentTuesday.isUserInteractionEnabled = false
+            currentWednesday.isUserInteractionEnabled = false
+            currentThursday.isUserInteractionEnabled = false
+            currentFriday.isUserInteractionEnabled = false
+            currentSaturday.isUserInteractionEnabled = false
+            currentSunday.isUserInteractionEnabled = false
         }
     }
+    
+    // MARK: - Personal Info
+    
+    @IBOutlet weak var fname: UITextField!
+    @IBOutlet weak var lname: UITextField!
+    @IBOutlet weak var address: UITextField!
+    @IBOutlet weak var phone: UITextField!
+    @IBOutlet weak var married: UISwitch!
+    @IBOutlet weak var personalEdit: UIButton!
+    @IBOutlet weak var personalSave: UIButton!
+    
+    func displayPersonalInfo(){
+        fname.text = currentLogin.info!.firstName!
+        lname.text = currentLogin.info!.lastName!
+        address.text = currentLogin.info!.homeAddress!
+        phone.text = String(currentLogin.info!.phoneNumber)
+        married.setOn(currentLogin.info!.married, animated: false)
+    }
+    
+    @IBAction func personalEditPress(_ sender: Any) {
+        fname.isUserInteractionEnabled = true
+        lname.isUserInteractionEnabled = true
+        address.isUserInteractionEnabled = true
+        phone.isUserInteractionEnabled = true
+        married.isUserInteractionEnabled = true
+        personalEdit.isHidden = true
+        personalSave.isHidden = false
+    }
+    
+    @IBAction func personalSavePress(_ sender: Any) {
+        do{
+            currentLogin.info!.setValue(fname.text!, forKey: "firstName")
+            currentLogin.info!.setValue(lname.text!, forKey: "lastName")
+            currentLogin.info!.setValue(address.text!, forKey: "homeAddress")
+            if phone.text! != ""{
+                currentLogin.info!.setValue(Int64(phone.text!), forKey: "phoneNumber")
+            }
+            currentLogin.info!.setValue(married.isOn, forKey: "married")
+            try managedObjectContext.save()
+        }catch{
+            print(error)
+        }
+        
+        personalSave.isHidden = true
+        personalEdit.isHidden = false
+        displayPersonalInfo()
+    }
+    
     
 }

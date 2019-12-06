@@ -14,11 +14,25 @@ class PunchCardViewController: UIViewController {
     var currentLogin: Employee!
     var firstLaunch: FirstLaunch!
     var managedObjectContext: NSManagedObjectContext!
+    var defaultDate: Date!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let cal = Calendar.current
+        
+        let defaultcomps = DateComponents.init(calendar: cal, year: 2000, month: 1, day: 1, hour: 0, minute: 1)
+        defaultDate = cal.date(from: defaultcomps)
+        if currentLogin.pay!.clockIn == defaultDate{
+            clockOutButton.isHidden = true
+            clockInButton.isHidden = false
+        } else if currentLogin.pay!.clockOut == defaultDate{
+            clockOutButton.isHidden = false
+            clockInButton.isHidden = true
+        } else {
+            clockInButton.isHidden = false
+            clockOutButton.isHidden = true
+        }
     }
     
     @IBOutlet weak var clockInButton: UIButton!
@@ -41,6 +55,8 @@ class PunchCardViewController: UIViewController {
             print(error)
         }
     }
+    
+    
     
     /*
     // MARK: - Navigation

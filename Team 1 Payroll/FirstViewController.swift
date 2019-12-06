@@ -24,11 +24,13 @@ class FirstViewController: UIViewController {
             let nextViewController = segue.destination as! OverviewViewController
             nextViewController.currentLogin = currentLogin
             nextViewController.firstLaunch = firstLaunch
+            nextViewController.defaultDate = defaultDate
         }
         if segue.identifier == "toPersonal" {
             let nextViewController = segue.destination as! personalViewController
             nextViewController.currentLogin = currentLogin
             nextViewController.firstLaunch = firstLaunch
+            nextViewController.defaultDate = defaultDate
         }
     }
     
@@ -53,6 +55,10 @@ class FirstViewController: UIViewController {
             fatalError("This view needs a persistent container.")
         }
         
+        let cal = Calendar.current
+        
+        let defaultcomps = DateComponents.init(calendar: cal, year: 2000, month: 1, day: 1, hour: 0, minute: 1)
+        defaultDate = cal.date(from: defaultcomps)
         // first launch is a final class that is connected to user default so that it only runs on first launch and the varaibles are not manipulated again
         
         firstLaunch = FirstLaunch(userDefaults: .standard, key: "com.any-suggestion.FirstLaunch.WasLaunchedBefore")
@@ -166,8 +172,8 @@ extension FirstViewController{
             do{
                 let results = try context.fetch(fetchRequest)
                 for result in results{
-                    if let testValue = result.accessibilityElements{
-                        print(testValue.description)
+                    if result.info?.firstName == "admin"{
+                        currentLogin = result
                     }
                 }
             }catch{
