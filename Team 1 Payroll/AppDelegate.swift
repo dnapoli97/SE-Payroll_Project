@@ -15,6 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var container: NSPersistentContainer!
     
+    // Creates a PresistentContainer object to house the database
+    // returns the object containing the database
     lazy var persistentContainer: NSPersistentContainer = {
         container = NSPersistentContainer(name: "MainData")
         container.loadPersistentStores { description, error in
